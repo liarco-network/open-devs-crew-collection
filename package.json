@@ -1,0 +1,13 @@
+{
+  "name": "open-devs-crew",
+  "description": "",
+  "author": "Marco Lipparini <developer@liarco.net>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liarco-network/open-devs-crew-collection.git"
+  },
+  "scripts": {
+    "build": "cd ./nextjs; yarn; yarn build; yarn next export"
+  }
+}

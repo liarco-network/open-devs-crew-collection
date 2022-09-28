@@ -1,0 +1,107 @@
+.main {
+  @apply flex flex-col lg:grid lg:grid-cols-2 lg:items-start lg:gap-8;
+  @apply justify-between md:justify-start;
+  @apply py-16 px-6;
+  @apply w-screen lg:max-w-[95%];
+  @apply min-h-[50vh];
+  @apply m-auto;
+  height: calc(var(--v-height) / 4 * 3);
+
+  @media (min-width: 1000px) {
+    height: auto !important;
+  }
+}
+
+.logoContainer {
+  @apply lg:flex;
+  @apply lg:w-full;
+  @apply lg:h-full;
+  @apply z-50;
+
+  .logo {
+    @apply w-full lg:w-auto;
+    @apply h-full;
+    @apply m-auto;
+    @apply object-contain;
+
+    @media (min-width: 700px) and (max-width: 1024px) {
+      @apply w-[65vw];
+    }
+  }
+}
+
+.stainedContainer {
+  @apply flex flex-col justify-center;
+  @apply relative;
+  @apply w-screen lg:w-full;
+  @apply lg:h-full;
+  @apply -top-[5vh] lg:top-0;
+  @apply -left-6 lg:left-0;
+
+  background-image: url("../assets/stain.png");
+  @apply bg-center bg-no-repeat bg-cover lg:bg-contain;
+
+  .infoContainer {
+    aspect-ratio: 691 / 364;
+    @apply w-full;
+    @apply h-auto max-h-full;
+    @apply text-center text-base lg:text-xl;
+  }
+
+  p {
+    @apply max-w-[25ch] sm:max-w-[35ch] md:max-w-[60] lg:max-w-[25ch];
+    @apply mx-auto;
+    @apply px-8 lg:px-0;
+    @apply pt-[16%];
+    @apply z-10;
+    @apply self-center;
+  }
+
+  .twitterButton {
+    @apply inline-flex flex-row gap-2 items-center;
+    @apply w-max;
+    @apply h-min;
+    @apply mt-4 mx-auto lg:ml-auto lg:mr-0;
+    @apply px-4 py-3;
+    @apply text-slate-700;
+    @apply bg-gradient-to-b from-white to-slate-50 hover:to-slate-100;
+    @apply border border-slate-50;
+    @apply shadow-md shadow-slate-900/[0.05];
+    @apply rounded-full;
+    @apply transition-all;
+    @apply hover:scale-105;
+    @apply z-10;
+
+    & > img {
+      @apply w-auto;
+      @apply h-6;
+    }
+  }
+}
+
+.charactersContainer {
+  @apply absolute;
+  @apply bottom-0;
+  @apply left-0;
+  @apply w-screen lg:w-full;
+  @apply lg:h-[30rem];
+  @apply overflow-hidden;
+}
+
+.tokensGroup {
+  @apply relative;
+  @apply -left-[8%];
+  @apply w-[116%];
+  @apply max-w-none;
+  @apply lg:h-full;
+  @apply mx-auto;
+
+  @media (min-width: 500px) {
+    @apply w-full;
+    @apply left-0;
+  }
+
+  @media (min-width: 1024px) {
+    width: auto !important;
+  }
+}

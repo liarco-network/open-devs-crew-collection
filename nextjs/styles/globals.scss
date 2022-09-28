@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  @media (min-width: 768px) {
+    font-size: calc(100vw / 50);
+  }
+
+  @media (min-width: 1024px) {
+    font-size: calc(100vw / 100);
+  }
+}
+
+@font-face {
+  font-family: "Sora";
+  src: url("../assets/Sora-Bold.ttf");
+}
+
+html,
+body {
+  @apply relative;
+  @apply w-full;
+  height: var(--v-height);
+  @apply min-h-[44rem];
+  font-family: 'Sora', sans-serif;
+  @apply text-slate-800;
+  background-image: url("../assets/background.jpg");
+  @apply bg-no-repeat bg-cover;
+
+  @media (min-width: 430px) {
+    @apply min-h-[55rem];
+  }
+}
