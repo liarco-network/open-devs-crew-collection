@@ -3,32 +3,61 @@
 @tailwind utilities;
 
 :root {
-  @media (min-width: 768px) {
-    font-size: calc(100vw / 50);
-  }
+  --padding-x: 2rem;
+  --max-column-width: 60ch;
+
+  @apply text-base;
 
   @media (min-width: 1024px) {
-    font-size: calc(100vw / 100);
+    --padding-x: 6rem;
+    @apply text-xl;
+    --max-column-width: 120ch;
   }
 }
 
 @font-face {
-  font-family: "Sora";
-  src: url("../assets/Sora-Bold.ttf");
+  font-family: "Rubik";
+  src: url("../assets/fonts/Rubik.ttf");
+  font-weight: 100 1000;
+  font-stretch: 25% 151%;
 }
 
 html,
 body {
   @apply relative;
+  @apply h-full;
   @apply w-full;
-  height: var(--v-height);
-  @apply min-h-[44rem];
-  font-family: 'Sora', sans-serif;
+  font-family: 'Rubik', sans-serif;
   @apply text-slate-800;
-  background-image: url("../assets/background.jpg");
-  @apply bg-no-repeat bg-cover;
+  @apply scroll-smooth;
+}
 
-  @media (min-width: 430px) {
-    @apply min-h-[55rem];
+h2 {
+  @apply text-3xl lg:text-5xl font-bold;
+}
+
+h3 {
+  @apply text-2xl lg:text-3xl font-semibold;
+}
+
+section {
+  a {
+    @apply whitespace-nowrap;
+    @apply font-semibold;
+    @apply decoration-sky-800 text-sky-800;
+
+    &:hover {
+      @apply underline;
+      @apply decoration-sky-900 text-sky-900;
+    }
+
+    &::after {
+      content: " 🔗";
+      @apply inline;
+    }
+  }
+
+  p:not(:first-of-type) {
+    @apply mt-4;
   }
 }
