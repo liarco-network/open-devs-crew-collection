@@ -26,6 +26,7 @@ import MepPic from '../assets/team/mep-picture.png';
 import HashLipsLogo from '../assets/partners/hashlips-logo.svg';
 import HashLipsLabLogo from '../assets/partners/hashlipslab-logo.svg';
 import SketchyLabsLogo from '../assets/partners/sketchylabs-logo.svg';
+import favicon from '../assets/icon.png';
 
 const Home: NextPage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -96,6 +97,8 @@ const Home: NextPage = () => {
         <meta property="og:type" content="website"></meta>
         <meta property="og:image" content={`${process.env.NEXT_PUBLIC_BASE_URL}/ogimage.jpg`}></meta>
         <meta property="og:url" content={`${process.env.NEXT_PUBLIC_BASE_URL}/`}></meta>
+
+        <link rel="icon" href={favicon.src} />
       </Head>
       
       <main>
