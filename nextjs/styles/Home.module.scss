@@ -211,7 +211,7 @@
   }
 }
 
-.project {
+.brand {
   @apply relative;
   @apply flex flex-col lg:grid lg:grid-cols-2 gap-4 items-center;
   max-width: var(--max-column-width);
@@ -304,6 +304,7 @@
   box-shadow: inset 0 -10px 10px -10px rgb(0 0 0 / 30%), 
               inset 0px 15px 10px -10px rgb(0 0 0 / 30%);
   background-image: url('../assets/backgrounds/collection-bg.jpg');
+  @apply pt-16;
   @apply bg-no-repeat;
   @apply bg-cover;
 
@@ -316,16 +317,25 @@
     padding-right: var(--padding-x);
   }
 
+  h2 {
+    @apply text-center;
+  }
+
   .stats {
     @apply relative;
     @apply pb-8 lg:pb-16;
 
     .statsList {
-      @apply flex sm:grid lg:flex flex-col lg:flex-row gap-8 gap-x-16 lg:gap-0 justify-center lg:justify-evenly;
-      @apply grid-flow-col grid-rows-2 sm:gap-8;
+      @apply flex sm:grid lg:flex flex-col lg:flex-row justify-center;
+      @apply grid-flow-col grid-rows-2;
+      @apply gap-y-12 gap-x-16 sm:gap-y-16 lg:gap-0;
+      @apply max-w-min md:max-w-full;
+      @apply mx-auto;
 
-      & dl {
-        @apply grid gap-2 lg:gap-4;
+      & div {
+        @apply relative;
+        @apply grid gap-2 gap-x-0 lg:gap-y-4;
+        grid-template-rows: min-content auto;
         @apply font-bold;
         @apply text-center;
 
@@ -338,6 +348,86 @@
         dt {
           @apply text-lg;
           @apply mx-auto;
+        }
+
+        @media (max-width:640px) or (min-width: 1024px) {
+          &:not(:last-child)::after {
+            @apply block;
+            @apply relative;
+            @apply top-[-1rem];
+            mix-blend-mode: multiply;
+            @apply w-28;
+            @apply pt-4;
+
+            @media (max-width: 1250px) {
+              @apply w-24;
+            }
+
+            content: "";
+            background-image: url("../assets/arrow.png");
+            @apply bg-contain bg-no-repeat bg-center;
+
+            grid-column: 2;
+            grid-row: 1 / 3;
+
+            @media (max-width: 640px) {
+              @apply absolute;
+              grid-column: 1;
+              grid-row: 3/3;
+              @apply h-12;
+              @apply -top-2;
+              @apply -left-14;
+              @apply rotate-[80deg];
+            }
+          }
+
+          &:not(:last-child):nth-child(even) {
+            &::after {
+              transform: scaleY(-1);
+              @apply top-[-1.5rem];
+            }
+
+            @media (max-width: 640px) {
+              &::after {
+                @apply -top-2;
+                @apply left-auto;
+                @apply -right-12;
+                transform: scaleY(-1) rotate(260deg);
+              }
+            }
+          }
+
+          @media (min-width: 1250px) {
+            &:first-child {
+              &::after {
+                @apply left-[1vw];
+              }
+            }
+
+            &:nth-child(3) {
+              &::after{
+                @apply right-[1vw];
+              }
+            }
+          }
+        }
+
+       &:last-child > dd {
+          @apply relative;
+
+          @apply text-sky-900;
+
+          &::after {
+            content: "";
+            @apply absolute;
+            mix-blend-mode: multiply;
+            @apply w-[190%];
+            @apply h-[190%];
+            @apply -top-[50%];
+            @apply -left-[42%];
+            background-image: url("../assets/circle-mark.png");
+            @apply bg-contain bg-no-repeat bg-center;
+          }
         }
       }
     }
@@ -566,6 +656,57 @@
       p {
         @apply font-normal;
       }
+
+      button {
+        @apply block;
+        @apply w-auto h-12;
+        @apply mt-2;
+        @apply mx-auto;
+        @apply p-2;
+ 
+        img {
+          @apply w-full h-full;
+          @apply mx-auto;
+        }
+
+        &.openedChevron {
+          img {
+            @apply rotate-180;
+          }
+        }
+      }
+
+      .collapsible {
+        @apply my-4;
+      }
+
+      &:last-child {
+        @apply relative;
+        @apply w-full sm:w-[110%];
+        @apply sm:-left-[5%];
+        @apply px-6 py-4 sm:px-12 sm:py-8;
+        @apply bg-yellow-50;
+        @apply border border-yellow-200;
+        @apply rounded-3xl;
+        @apply drop-shadow-md;
+
+        & h3 {
+          @apply text-yellow-900;
+
+          & > span {
+            @apply bg-yellow-400;
+            @apply text-yellow-900;
+          }
+        }
+
+        & p {
+          @apply text-stone-800;
+        }
+
+        & a {
+          @apply text-yellow-700;
+        }
+      }
     }
   }
 }
@@ -614,7 +755,7 @@
   }
 }
 
-.roadmap {
+.blueprint {
   max-width: var(--max-column-width);
   @apply mx-auto;
   @apply py-16;

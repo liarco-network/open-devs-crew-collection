@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
+import useCollapse from 'react-collapsed';
 import styles from '../styles/Home.module.scss';
 import OdcLogo from '../assets/logo.png';
 import OdcWhiteLogo from '../assets/white-logo.png';
@@ -10,7 +11,7 @@ import GithubBlack from '../assets/icons/github-black.svg';
 import Twitter from '../assets/icons/twitter.svg';
 import EloCharacters from '../assets/elo.png';
 import SadGangCharacter from '../assets/sad-gang.jpg';
-import ProjectCharacter from '../assets/the-project.jpg';
+import BrandCharacter from '../assets/the-brand.jpg';
 import ACLlama from '../assets/animal-cosplays/llama.png';
 import ACUnknown from '../assets/animal-cosplays/unknown.png';
 import NFSCard from '../assets/nfs.png';
@@ -26,12 +27,30 @@ import MepPic from '../assets/team/mep-picture.png';
 import HashLipsLogo from '../assets/partners/hashlips-logo.svg';
 import HashLipsLabLogo from '../assets/partners/hashlipslab-logo.svg';
 import SketchyLabsLogo from '../assets/partners/sketchylabs-logo.svg';
+import DownArrow from '../assets/down-arrow.svg';
 import favicon from '../assets/icon.png';
 
 const Home: NextPage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [canClick, setCanClick] = useState<boolean>(true);
   const [githubButtonInView, setGithubButtonInView] = useState(false);
+
+  // Collapsible elements
+  const {
+    getCollapseProps: getCollapsePropsLiarco,
+    getToggleProps: getTogglePropsLiarco,
+    isExpanded: isExpandedLiarco,
+  } = useCollapse();
+  const {
+    getCollapseProps: getCollapsePropsFreaksPix,
+    getToggleProps: getTogglePropsFreaksPix,
+    isExpanded: isExpandedFreaksPix,
+  } = useCollapse();
+  const {
+    getCollapseProps: getCollapsePropsMep,
+    getToggleProps: getTogglePropsMep,
+    isExpanded: isExpandedMep,
+  } = useCollapse();
 
   const handleGithubScroll = () => {
     const footerElementHeight = document.getElementsByTagName("footer")[0]!.clientHeight;
@@ -126,16 +145,24 @@ const Home: NextPage = () => {
             </a>
 
             <ul className={styles.links}>
-              <li><a onClick={() => setMenuOpen(false)} href="#project">The project</a></li>
+              <li><a onClick={() => setMenuOpen(false)} href="#brand">The brand</a></li>
               <li><a onClick={() => setMenuOpen(false)} href="#collection">The collection</a></li>
               <li><a onClick={() => setMenuOpen(false)} href="#team">The team</a></li>
               <li><a onClick={() => setMenuOpen(false)} href="#partners">Partners</a></li>
-              <li><a onClick={() => setMenuOpen(false)} href="#roadmap">Roadmap</a></li>
+              <li><a onClick={() => setMenuOpen(false)} href="#blueprint">Blueprint</a></li>
             </ul>
 
             <ul className={styles.socials}>
-              <li className={styles.twitter}><a href="https://twitter.com/marco_lipparini" target="_blank" rel="noreferrer"><img src={Twitter.src} alt="Twitter logo" /></a></li>
-              <li className={styles.github}><a href="https://github.com/liarco-network/open-devs-crew-collection" target="_blank" rel="noreferrer"><img src={GithubBlack.src} alt="GitHub logo" /></a></li>
+              <li className={styles.twitter}>
+                <a href="https://twitter.com/marco_lipparini" target="_blank" rel="noreferrer">
+                  <img src={Twitter.src} alt="Twitter logo" />
+                </a>
+              </li>
+              <li className={styles.github}>
+                <a href="https://github.com/liarco-network/open-devs-crew-collection" target="_blank" rel="noreferrer">
+                  <img src={GithubBlack.src} alt="GitHub logo" />
+                </a>
+              </li>
             </ul>
           </div>
         </nav>
@@ -152,8 +179,16 @@ const Home: NextPage = () => {
               <p>Your open source journey through NFTs, web3 and educational content is coming soon...</p>
 
               <ul className={styles.socials}>
-                <li className={styles.twitter}><a href="https://twitter.com/marco_lipparini" target="_blank" rel="noreferrer"><img src={Twitter.src} alt="Twitter logo" /></a></li>
-                <li className={styles.github}><a href="https://github.com/liarco-network/open-devs-crew-collection" target="_blank" rel="noreferrer"><img src={Github.src} alt="GitHub logo" /></a></li>
+                <li className={styles.twitter}>
+                  <a href="https://twitter.com/marco_lipparini" target="_blank" rel="noreferrer">
+                    <img src={Twitter.src} alt="Twitter logo" />
+                  </a>
+                </li>
+                <li className={styles.github}>
+                  <a href="https://github.com/liarco-network/open-devs-crew-collection" target="_blank" rel="noreferrer">
+                    <img src={Github.src} alt="GitHub logo" />
+                  </a>
+                </li>
               </ul>
             </div>
 
@@ -167,11 +202,11 @@ const Home: NextPage = () => {
           </div>
         </header>
 
-        <section id="project" className={styles.project}>
-            <img src={ProjectCharacter.src} alt="Project character" loading="lazy" />
+        <section id="brand" className={styles.brand}>
+            <img src={BrandCharacter.src} alt="Brand character" loading="lazy" />
 
             <div className={styles.infoBox}>
-              <h2>The project</h2>
+              <h2>The brand</h2>
               <p>Whether you&apos;re a <strong>developer</strong>, an <strong>artist</strong>, an <strong>investor</strong>, or a <strong>web3 enthusiast</strong>, Open Devs Crew is an excellent opportunity to carve out your place within an ecosystem of enormous potential, one that has the unique goal of contributing to the healthy and flourishing growth of web3, instead of passively waiting for these new technologies to fully form around us.</p>
 
               <p>The best way to ensure that the future of web and blockchain technologies are exactly how we dream of them, is to be on the front line to design the outline and color its shapes.</p>
@@ -181,7 +216,7 @@ const Home: NextPage = () => {
         </section>
 
         <section className={styles.keyPointsContainer}>
-          <h2>Why people choose us?</h2>
+          <h2>What makes us different</h2>
 
           <ul className={styles.keyPoints}>
             <li>
@@ -224,31 +259,33 @@ const Home: NextPage = () => {
         </section>
 
         <section id="collection" className={styles.collection}>
+          <h2>The collection</h2>
+
           <div>
             <div className={styles.stats}>
-              <div className={styles.statsList}>
-                <dl>
+              <dl className={styles.statsList}>
+                <div>
                   <dd>7M+</dd>
                   <dt>Combinations</dt>
-                </dl>
-                <dl>
+                </div>
+                <div>
                   <dd>20k</dd>
                   <dt>Metadata generated</dt>
-                </dl>
-                <dl>
+                </div>
+                <div>
                   <dd>10k</dd>
                   <dt>Tokens generated</dt>
-                </dl>
-                <dl>
+                </div>
+                <div>
                   <dd>1990</dd>
                   <dt>Total supply</dt>
-                </dl>
-              </div>
+                </div>
+              </dl>
             </div>
 
             <div className={styles.rankingInfo}>
               <div className={styles.infoBox}>
-                <h3>Art 🤝️ programming</h3>
+                <h3>Art ❤️ Programming</h3>
 
                 <p>Out of 7M+ possible combinations, 20k metadata was generated. These combinations have been <strong>analyzed with tailor-made tools</strong> to guarantee that each token would be visually different from the rest by <strong>more than 1%</strong> of the image and the distribution of traits would meet expectations. The process has led to filtering 10k tokens, of which their respective images have been generated.</p>
 
@@ -268,7 +305,7 @@ const Home: NextPage = () => {
 
             <p>The characters of this collection do not love to be labelled with a certain animal species, they are &ldquo;<strong>Open Devs</strong>&rdquo;, but they do love dressing up in a fun and bizarre way. Five lucky tokens were officially elected as <strong>Animal Cosplay</strong> because of their ability to impersonate certain fellow animals.</p>
 
-            <p>On this page you can discover the next one up <strong>in the reveal order</strong>, who will be the lucky minter?</p>
+            <p>Down below you can discover the next one up <strong>in the reveal order</strong>, who will be the lucky minter?</p>
           </div>
 
           <div className={styles.animals}>
@@ -313,7 +350,7 @@ const Home: NextPage = () => {
 
               <div className={styles.infoBox}>
               <h2>N** F** S***</h2>
-                <p>The identity of these tokens is <strong>top secret</strong>, certain indiscretions reveal that some clues could already be hidden inside the first mints, but their true nature remains nevertheless a mystery.</p>
+                <p>The identity of these tokens is <strong>top secret</strong>. Rumors reveal that some clues could already be hidden inside the first mints, but their true nature remains nevertheless a mystery.</p>
 
                 <p>Only one thing is certain: these tokens are destined for true experts, only a <strong>diamond hand</strong> can hold onto a token so confident in itself...</p>
               </div>
@@ -330,13 +367,19 @@ const Home: NextPage = () => {
               <div className={styles.infoBox}>
                 <h3>Liarco <span>Founder</span></h3>
 
-                <p><strong>Marco Lipparini</strong> (a.k.a. Liarco), Partner and Head of Development of <strong>MEP Srl</strong> communications agency and founder of the NFT <strong>Open Devs Crew</strong> project.</p>
+                <p><strong>Marco Lipparini</strong> (a.k.a. Liarco), Partner and Head of Development of <strong>MEP Srl</strong> communications agency and founder of the NFT <strong>Open Devs Crew</strong> brand.</p>
 
-                <p>Curious to the core about <strong>new technologies</strong>, he plunged headfirst into blockchain programming when he discovered it. From here the Open Source projects were born in collaboration with <strong>Daniel Eugene Botha</strong> (HashLips) and the YouTube channel &ldquo;<a href="http://www.youtube.com/channel/UCsNUSP49XDIhxaZoZlLwnyw" target="_blank" rel="noreferrer">Liarco DevTips</a>&rdquo;.<br />
-                Additionally, he is currently the <strong>Lead Developer</strong> for the <a href="https://degentoonz.io/#crew" target="_blank" rel="noreferrer">DegenToonz</a> web3 brand.<br />
-                The tools that he has developed and maintained are helping a lot of <strong>artists</strong>, <strong>developers</strong> and <strong>brands</strong> to create various types of projects (especially in the blockchain and web3 fields).</p>
+                <div className={styles.collapsible} {...getCollapsePropsLiarco()}>
+                  <p>Curious to the core about <strong>new technologies</strong>, he plunged headfirst into blockchain programming when he discovered it. From here the Open Source projects were born in collaboration with <strong>Daniel Eugene Botha</strong> (HashLips) and the YouTube channel &ldquo;<a href="http://www.youtube.com/channel/UCsNUSP49XDIhxaZoZlLwnyw" target="_blank" rel="noreferrer">Liarco DevTips</a>&rdquo;.<br />
+                  Additionally, he is currently the <strong>Lead Developer</strong> for the <a href="https://degentoonz.io/#crew" target="_blank" rel="noreferrer">DegenToonz</a> web3 brand.<br />
+                  The tools that he has developed and maintained are helping a lot of <strong>artists</strong>, <strong>developers</strong> and <strong>brands</strong> to create various types of projects (especially in the blockchain and web3 fields).</p>
 
-                <p>The videos on his <strong>YouTube channel</strong> have allowed a lot of people to take the first steps with these technologies, even with no development experience.</p>
+                  <p>The videos on his <strong>YouTube channel</strong> have allowed a lot of people to take the first steps with these technologies, even with no development experience.</p>
+                </div>
+
+                <button className={isExpandedLiarco ? styles.openedChevron : styles.closedChevron} {...getTogglePropsLiarco()}>
+                  <img src={DownArrow.src} alt="Click on this arrow show/hide more info about Liarco" />
+                </button>
               </div>
             </li>
             <li>
@@ -345,9 +388,17 @@ const Home: NextPage = () => {
               <div className={styles.infoBox}>
                 <h3>FreaksPix <span>Artist</span></h3>
 
-                <p><strong>Alessandro</strong> (a.k.a. FreaksPix) was born in Bologna in November of 1986. He developed a passion for <strong>hand drawing</strong> from a young age and during his studies of graphics and design he transferred this passion from pieces of paper to digital ones. Everything comes topped with and flavored by his passion for writing when (even if just for a brief period) he focused on the creation of &ldquo;puppets&rdquo; with sharp characteristics, cuts of color and clear outlines.</p>
+                <p><strong>Alessandro</strong> (a.k.a. FreaksPix) was born in Bologna in November of 1986. He developed a passion for <strong>hand drawing</strong> from a young age and during his studies of graphics and design he transferred this passion from pieces of paper to digital ones.</p>
+                
+                <div className={styles.collapsible} {...getCollapsePropsFreaksPix()}>
+                  <p>Everything comes topped with and flavored by his passion for writing when (even if just for a brief period) he focused on the creation of &ldquo;puppets&rdquo; with sharp characteristics, cuts of color and clear outlines.</p>
 
-                <p>The combination of these passions and experiences define his style, <strong>simple</strong> and <strong>clear</strong>. The <strong>vector graphic</strong> is without a doubt his main passion and the sketches always start from there to then be enriched by textures and other raster effects, while never losing the manual part of the <strong>initial pencil on paper sketches</strong>.</p>
+                  <p>The combination of these passions and experiences define his style, <strong>simple</strong> and <strong>clear</strong>. The <strong>vector graphic</strong> is without a doubt his main passion and the sketches always start from there to then be enriched by textures and other raster effects, while never losing the manual part of the <strong>initial pencil on paper sketches</strong>.</p>
+                </div>
+
+                <button className={isExpandedFreaksPix ? styles.openedChevron : styles.closedChevron} {...getTogglePropsFreaksPix()}>
+                  <img src={DownArrow.src} alt="Click on this arrow show/hide more info about FreaksPix" />
+                </button>
               </div>
             </li>
             <li>
@@ -357,10 +408,15 @@ const Home: NextPage = () => {
                 <h3>MEP Srl <span>Main sponsor</span></h3>
 
                 <p><a href="https://www.mep.it" target="_blank" rel="noreferrer">MEP</a> is a marketing agency based in Bologna (in northern Italy) founded in 2012. It&apos;s characterized by a strong sense of <strong>creativity</strong> and a <strong>technological soul</strong>. Its core business is to build marketing and communications strategies focused on expanding its Partners&apos; <strong>reputation</strong> and <strong>sales opportunities</strong>.</p>
+                <div className={styles.collapsible} {...getCollapsePropsMep()}>
+                  <p>One of its strengths is its strong connection to the <strong>open source</strong> space.</p>
 
-                <p>One of its strengths is its strong connection to the <strong>open source</strong> space.</p>
+                  <p>In the middle of 2021, it started studying blockchain and NFTs to write an application for its framework in order to adapt it to the <strong>European privacy regulation</strong> updates. Since then it has fallen in love with that entire world and has started to collaborate on different collections and projects.</p>
+                </div>
 
-                <p>In the middle of 2021, it started studying blockchain and NFTs to write an application for its framework in order to adapt it to the <strong>European privacy regulation</strong> updates. Since then it has fallen in love with that entire world and has started to collaborate on different collections and projects.</p>
+                <button className={isExpandedMep ? styles.openedChevron : styles.closedChevron} {...getTogglePropsMep()}>
+                  <img src={DownArrow.src} alt="Click on this arrow show/hide more info about MEP Srl" />
+                </button>
               </div>
             </li>
           </ul>
@@ -393,16 +449,16 @@ const Home: NextPage = () => {
           </div>
         </section>
 
-        <section id="roadmap" className={styles.roadmap}>
-          <h2>Roadmap</h2>
+        <section id="blueprint" className={styles.blueprint}>
+          <h2>The blueprint</h2>
           
-          <p>Our roadmap <strong>is not</strong> based on unlocking achievements or reaching percentages. The Open Devs Crew project, as a philosophy and activity, started in <strong>November of 2021</strong>. This collection is your <strong>opportunity</strong> to take part in and <strong>join us</strong> on this journey.</p>
+          <p>Our roadmap <strong>is not</strong> based on unlocking achievements or reaching percentages. The Open Devs Crew brand, as a philosophy and activity, started in <strong>November of 2021</strong>. This collection is your <strong>opportunity</strong> to take part in and <strong>join us</strong> on this journey.</p>
  
           <p>The work of people like Liarco and HashLips, of companies like MEP Srl or communities like Sketchy Labs aims to give a friendly, welcoming, and safe format to web3. This is done through <strong>open source projects</strong>, <strong>educational materials</strong>, <strong>professional support</strong>, and the realization of products for web3 brands and also for <strong>traditional businesses</strong> that want to benefit from the interesting opportunities offered by <strong>decentralized technologies</strong>.</p>
 
           <p>All of these activities <strong>improve the ecosystem</strong> and generate earnings that can be shared directly, <strong>without intermediaries</strong>, with the people that share the same values and do their part as <strong>developers</strong>, <strong>investors</strong> or even <strong>ambassadors</strong>, bringing awareness of our community to more and more people.</p>
 
-          <p className={styles.noPaddingParagraph}>We have ambitious projects, like for example:</p>
+          <p className={styles.noPaddingParagraph}>We have ambitious goals, like for example:</p>
           <ul>
             <li>The development of <strong>support tools</strong> for NFT communities in order to improve <strong>security</strong> and <strong>sustainability</strong> over time (like HashLips Lab projects for artists and developers, that contribute directly to the revenue of this community)</li>
             <li>The development of a <strong>subscription system</strong>, based on the blockchain, that can be truly sustainable for <strong>companies</strong> and <strong>professionals</strong>. Through these same tools, partners like MEP Srl will provide professional support and <strong>share the revenues</strong> of this business with the community</li>
@@ -412,9 +468,9 @@ const Home: NextPage = () => {
             <li>Preparation and team support for the participation in <strong>Hackathons</strong> promoted by various organizations in and outside the blockchain world. The funds generated by any awards, net of costs incurred, will be <strong>directly reinvested</strong> in the community.</li>
           </ul>
 
-          <p>The distribution of revenues <strong>directly in ETH</strong> is expected for all projects, in equal parts, to all of the holders (completely <strong>on-chain</strong> and <strong>without intermediaries</strong>, where applicable). This is made possible because by the &ldquo;<strong>Smart Community Wallet</strong>&rdquo;, a solution that allows for the distribution of funds earned from all of the activities through the NFTs present in each wallet (including <strong>all royalties</strong> of the same collection).</p>
+          <p>The distribution of revenues <strong>directly in ETH</strong> is expected for all projects, in equal parts, to all of the holders (completely <strong>on-chain</strong> and <strong>without intermediaries</strong>, where applicable). This is made possible because by the &ldquo;<strong>Smart Community Wallet</strong>&rdquo;, a solution that allows for the distribution of funds earned from all of the activities through the NFTs present in each wallet (including <strong>all royalties</strong> paid on the secondary market).</p>
           
-          <p>You can discover more on all this, and examine the source code, in our <a href="https://github.com/liarco-network/open-devs-crew-collection" target="_blank" rel="noreferrer">GitHub repository</a>.</p>
+          <p>You can discover more about all this, and examine the source code, in our <a href="https://github.com/liarco-network/open-devs-crew-collection" target="_blank" rel="noreferrer">GitHub repository</a>.</p>
             
         </section>
 
@@ -424,8 +480,16 @@ const Home: NextPage = () => {
               <img src={OdcWhiteLogo.src} alt="Open Devs Crew logo" loading="lazy" />
             </button>
             <ul className={styles.socials}>
-              <li className={styles.twitter}><a href="https://twitter.com/marco_lipparini" target="_blank" rel="noreferrer"><img src={Twitter.src} alt="Twitter logo" loading="lazy" /></a></li>
-              <li className={styles.github}><a href="https://github.com/liarco-network/open-devs-crew-collection" target="_blank" rel="noreferrer"><img src={Github.src} alt="GitHub logo" loading="lazy" /></a></li>
+              <li className={styles.twitter}>
+                <a href="https://twitter.com/marco_lipparini" target="_blank" rel="noreferrer">
+                  <img src={Twitter.src} alt="Twitter logo" loading="lazy" />
+                </a>
+              </li>
+              <li className={styles.github}>
+                <a href="https://github.com/liarco-network/open-devs-crew-collection" target="_blank" rel="noreferrer">
+                  <img src={Github.src} alt="GitHub logo" loading="lazy" />
+                </a>
+              </li>
             </ul>
           </div>
         </footer>
