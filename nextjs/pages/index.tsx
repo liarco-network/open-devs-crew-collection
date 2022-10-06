@@ -377,7 +377,10 @@ const Home: NextPage = () => {
                   <p>The videos on his <strong>YouTube channel</strong> have allowed a lot of people to take the first steps with these technologies, even with no development experience.</p>
                 </div>
 
-                <button className={isExpandedLiarco ? styles.openedChevron : styles.closedChevron} {...getTogglePropsLiarco()}>
+                <button
+                  title={isExpandedLiarco ? "Collapse info about Liarco" : "Expand info about Liarco"}
+                  className={isExpandedLiarco ? styles.openedChevron : styles.closedChevron}
+                  {...getTogglePropsLiarco()}>
                   <img src={DownArrow.src} alt="Click on this arrow show/hide more info about Liarco" />
                 </button>
               </div>
@@ -396,7 +399,10 @@ const Home: NextPage = () => {
                   <p>The combination of these passions and experiences define his style, <strong>simple</strong> and <strong>clear</strong>. The <strong>vector graphic</strong> is without a doubt his main passion and the sketches always start from there to then be enriched by textures and other raster effects, while never losing the manual part of the <strong>initial pencil on paper sketches</strong>.</p>
                 </div>
 
-                <button className={isExpandedFreaksPix ? styles.openedChevron : styles.closedChevron} {...getTogglePropsFreaksPix()}>
+                <button
+                  title={isExpandedFreaksPix ? "Collapse info about FreaksPix" : "Expand info about FreaksPix"}
+                  className={isExpandedFreaksPix ? styles.openedChevron : styles.closedChevron}
+                  {...getTogglePropsFreaksPix()}>
                   <img src={DownArrow.src} alt="Click on this arrow show/hide more info about FreaksPix" />
                 </button>
               </div>
@@ -414,7 +420,10 @@ const Home: NextPage = () => {
                   <p>In the middle of 2021, it started studying blockchain and NFTs to write an application for its framework in order to adapt it to the <strong>European privacy regulation</strong> updates. Since then it has fallen in love with that entire world and has started to collaborate on different collections and projects.</p>
                 </div>
 
-                <button className={isExpandedMep ? styles.openedChevron : styles.closedChevron} {...getTogglePropsMep()}>
+                <button
+                  title={isExpandedMep ? "Collapse info about MEP" : "Expand info about MEP"}
+                  className={isExpandedMep ? styles.openedChevron : styles.closedChevron}
+                  {...getTogglePropsMep()}>
                   <img src={DownArrow.src} alt="Click on this arrow show/hide more info about MEP Srl" />
                 </button>
               </div>
