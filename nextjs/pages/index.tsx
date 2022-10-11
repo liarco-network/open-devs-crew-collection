@@ -24,7 +24,7 @@ import StructureIcon from '../assets/icons/structure.svg';
 import TrustIcon from '../assets/icons/trust.svg';
 import LiarcoPic from '../assets/team/liarco-picture.jpg';
 import FreaksPixPic from '../assets/team/freakspix-picture.jpg';
-import MepPic from '../assets/team/mep-picture.png';
+import MepPic from '../assets/team/mep-picture.jpg';
 import HashLipsLogo from '../assets/partners/hashlips-logo.svg';
 import HashLipsLabLogo from '../assets/partners/hashlipslab-logo.svg';
 import SketchyLabsLogo from '../assets/partners/sketchylabs-logo.svg';
