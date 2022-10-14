@@ -342,8 +342,6 @@ const Home: NextPage = () => {
               <p>This is great as we wanted our art to generally represent positivity, but we are also aware that in life it would not be possible to truly appreciate joy without a trace of sadness every so often. For this reason, the <strong>“Sad Gang”</strong> was born!</p>
 
               <p>It is made up on <strong>only three tokens</strong> in the entire collection that have an unequivocally sad expression and this makes them <strong>extremely rare</strong>. Would you have ever imagined that the reveal of a sad face token would be able to bring joy to its owner?!</p>
-
-              <p>Would you ever have imagined that the reveal of a sad token would have been able to cheer up its owner??</p>
             </div>
 
             <img src={SadGangCharacter.src} alt="Sad Gang character" />
