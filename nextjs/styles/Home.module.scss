@@ -467,21 +467,31 @@
 
 .animalCosplayContainer {
   .introduction {
+    @apply relative;
+    @apply flex flex-col lg:grid lg:grid-cols-2 gap-4 items-center;
     max-width: var(--max-column-width);
     @apply mx-auto;
-    @apply py-16;
+    @apply pt-8 pb-16 lg:pt-16;
     padding-left: var(--padding-x);
     padding-right: var(--padding-x);
-
-    h2 {
-      @apply mb-8;
-      @apply text-center;
+  
+    & img {
+      @apply max-w-[60%] lg:max-w-full;
+      @apply lg:self-start;
+      @apply mt-8 md:mt-12;
     }
 
-    p {
-      @apply font-normal;
-      @apply max-w-screen-md;
-      @apply mx-auto;
+    .infoBox {
+      @apply flex flex-col;
+      @apply mt-8 lg:mt-0;
+  
+      h2 {
+        @apply mb-4 lg:mb-6;
+      }
+  
+      p {
+        @apply font-normal;
+      }
     }
   }
 
