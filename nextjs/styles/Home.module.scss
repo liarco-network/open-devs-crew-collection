@@ -467,21 +467,31 @@
 
 .animalCosplayContainer {
   .introduction {
+    @apply relative;
+    @apply flex flex-col lg:grid lg:grid-cols-2 gap-4 items-center;
     max-width: var(--max-column-width);
     @apply mx-auto;
-    @apply py-16;
+    @apply pt-8 pb-16 lg:pt-16;
     padding-left: var(--padding-x);
     padding-right: var(--padding-x);
-
-    h2 {
-      @apply mb-8;
-      @apply text-center;
+  
+    & img {
+      @apply max-w-[60%] lg:max-w-full;
+      @apply lg:self-start;
+      @apply mt-8 md:mt-12;
     }
 
-    p {
-      @apply font-normal;
-      @apply max-w-screen-md;
-      @apply mx-auto;
+    .infoBox {
+      @apply flex flex-col;
+      @apply mt-8 lg:mt-0;
+  
+      h2 {
+        @apply mb-4 lg:mb-6;
+      }
+  
+      p {
+        @apply font-normal;
+      }
     }
   }
 
@@ -627,15 +637,29 @@
   }
 
   ul {
-    @apply grid gap-20 lg:gap-12;
+    @apply grid gap-12 lg:gap-12;
 
     & li {
-      @apply flex flex-col lg:flex-row-reverse lg:even:flex-row gap-4 lg:gap-8;
+      @apply flex flex-col lg:grid lg:grid-cols-[75%_25%] lg:even:grid-cols-[25%_75%] gap-8 lg:gap-0;
       @apply items-center;
 
+      &:nth-child(even) {
+        .infoBox {
+          @apply order-1;
+          @apply lg:ml-8 lg:mr-0;
+        }
+      }
+
       img {
-        @apply w-1/3 lg:w-1/4;
+        @apply block;
+        @apply max-w-[60%] lg:max-w-full;
+        @apply mx-auto;
         @apply rounded-full;
+      }
+
+      .infoBox {
+        @apply lg:-order-1;
+        @apply lg:mr-8;
       }
 
       h3 {
@@ -684,7 +708,7 @@
         @apply relative;
         @apply w-full sm:w-[110%];
         @apply sm:-left-[5%];
-        @apply px-6 py-4 sm:px-12 sm:py-8;
+        @apply px-6 py-8 sm:px-12;
         @apply bg-yellow-50;
         @apply border border-yellow-200;
         @apply rounded-3xl;

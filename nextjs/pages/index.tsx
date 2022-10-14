@@ -12,6 +12,7 @@ import Twitter from '../assets/icons/twitter.svg';
 import EloCharacters from '../assets/elo.png';
 import SadGangCharacter from '../assets/sad-gang.jpg';
 import BrandCharacter from '../assets/the-brand.jpg';
+import AnymalCosplays from '../assets/animal-cosplays/anymal-cosplays.jpg';
 import ACLlama from '../assets/animal-cosplays/llama.png';
 import ACUnknown from '../assets/animal-cosplays/unknown.png';
 import NFSCard from '../assets/nfs.png';
@@ -23,7 +24,7 @@ import StructureIcon from '../assets/icons/structure.svg';
 import TrustIcon from '../assets/icons/trust.svg';
 import LiarcoPic from '../assets/team/liarco-picture.jpg';
 import FreaksPixPic from '../assets/team/freakspix-picture.jpg';
-import MepPic from '../assets/team/mep-picture.png';
+import MepPic from '../assets/team/mep-picture.jpg';
 import HashLipsLogo from '../assets/partners/hashlips-logo.svg';
 import HashLipsLabLogo from '../assets/partners/hashlipslab-logo.svg';
 import SketchyLabsLogo from '../assets/partners/sketchylabs-logo.svg';
@@ -145,9 +146,9 @@ const Home: NextPage = () => {
             </a>
 
             <ul className={styles.links}>
-              <li><a onClick={() => setMenuOpen(false)} href="#brand">The brand</a></li>
-              <li><a onClick={() => setMenuOpen(false)} href="#collection">The collection</a></li>
-              <li><a onClick={() => setMenuOpen(false)} href="#team">The team</a></li>
+              <li><a onClick={() => setMenuOpen(false)} href="#brand">The Brand</a></li>
+              <li><a onClick={() => setMenuOpen(false)} href="#collection">The Collection</a></li>
+              <li><a onClick={() => setMenuOpen(false)} href="#team">The Team</a></li>
               <li><a onClick={() => setMenuOpen(false)} href="#partners">Partners</a></li>
               <li><a onClick={() => setMenuOpen(false)} href="#blueprint">Blueprint</a></li>
             </ul>
@@ -176,7 +177,7 @@ const Home: NextPage = () => {
                 alt="Open Devs Crew logo"
               />
 
-              <p>Your open source journey through NFTs, web3 and educational content is coming soon...</p>
+              <p>Your access pass to dev support and open source educational Web3 content!</p>
 
               <ul className={styles.socials}>
                 <li className={styles.twitter}>
@@ -206,12 +207,12 @@ const Home: NextPage = () => {
             <img src={BrandCharacter.src} alt="Brand character" loading="lazy" />
 
             <div className={styles.infoBox}>
-              <h2>The brand</h2>
-              <p>Whether you&apos;re a <strong>developer</strong>, an <strong>artist</strong>, an <strong>investor</strong>, or a <strong>web3 enthusiast</strong>, Open Devs Crew is an excellent opportunity to carve out your place within an ecosystem of enormous potential, one that has the unique goal of contributing to the healthy and flourishing growth of web3, instead of passively waiting for these new technologies to fully form around us.</p>
+              <h2>The Brand</h2>
+              <p>Whether you’re a <strong>developer</strong>, an <strong>artist</strong>, an <strong>investor</strong>, or a <strong>web3 enthusiast</strong>, you need access to an ecosystem of development support, open source resources and educational material. Open Devs Crew has the unique goal of actively contributing to and supporting the growth of web3 brands with a suite of newest technologies formed around us.</p>
 
-              <p>The best way to ensure that the future of web and blockchain technologies are exactly how we dream of them, is to be on the front line to design the outline and color its shapes.</p>
+              <p>The best way to ensure that the future of web and blockchain technologies are exactly how we envision them, is to be on the front line to design and develop that future. </p>
 
-              <p>Discover the <strong>Open Devs Crew &ldquo;kit&rdquo;</strong> to face this adventure...</p>
+              <p>Discover the Open Devs Crew “kit” and amplify and enhance your journey.</p>
             </div>
         </section>
 
@@ -220,28 +221,16 @@ const Home: NextPage = () => {
 
           <ul className={styles.keyPoints}>
             <li>
-              <img src={DetailsIcon.src} alt="Details icon" loading="lazy" />
-
-              <h3>Attention to detail</h3>
-              <p>The best combinations, chosen through analysis tools of the collection and one step of manual selection by users using the <a href="https://en.wikipedia.org/wiki/Elo_rating_system" target="_blank" rel="noreferrer">ELO rating system</a>.</p>
-            </li>
-            <li>
-              <img src={QualityIcon.src} alt="Quality icon" loading="lazy" />
-
-              <h3>High quality graphics</h3>
-              <p>Tokens made with the extreme care typical of <strong>made in Italy</strong>. The pencil sketches have been vectorized, colored, and lastly enhanced with rich textures, in order to obtain the maximum visual impact.</p>
-            </li>
-            <li>
               <img src={TrustIcon.src} alt="Trust icon" loading="lazy" />
 
               <h3>Trust</h3>
-              <p>The core team includes a <strong>DOXXED founder</strong> who has been contributing to open source software for years and an Italian company as <strong>official sponsor</strong> and main <strong>service provider</strong>. <a href="#team">Learn more</a></p>
+              <p>The core team includes a <span className="toUppercase">DOXXED</span> founder who has been building and contributing to open source software for years both in Web2 and Web3. He is the co-founder of the company who is the <strong>official sponsor</strong> and main service provider.</p>
             </li>
             <li>
-              <img src={StructureIcon.src} alt="Structure icon" loading="lazy" />
+              <img src={ExperienceIcon.src} alt="Experience icon" loading="lazy" />
 
-              <h3>Solid framework</h3>
-              <p>Our solutions have already been deployed by many web3 projects, even in the top 120 collections from all-time, all-chains <em>(based on public rankings provided by OpenSea)</em>.</p>
+              <h3>Experience</h3>
+              <p>A core team of experienced developers and artists who have proven their worth and who’s work is publicly verifiable thanks to collaborations with brands like <strong>Hashlips Lab</strong>, <strong>Sketchy Labs</strong> and many more.</p>
             </li>
             <li>
               <img src={DecentralizedIcon.src} alt="Decentralization icon" loading="lazy" />
@@ -250,16 +239,28 @@ const Home: NextPage = () => {
               <p>A brand that focuses on decentralization from day one, distributing <strong>100% of the revenues</strong> generated by the community to the its holders, <strong>without intermediaries</strong>.</p>
             </li>
             <li>
-              <img src={ExperienceIcon.src} alt="Experience icon" loading="lazy" />
+              <img src={StructureIcon.src} alt="Structure icon" loading="lazy" />
 
-              <h3>Experience</h3>
-              <p>Roadmap based on activities already in progress and publicly verifiable thanks to the collaboration with brands like <strong>HashLips Lab</strong>, <strong>Sketchy Labs</strong> and more.</p>
+              <h3>Exceptional framework</h3>
+              <p>Our solutions have been deployed by many web3 projects, including very prominent collections in the top 100 all-time, all-chains on Opensea.</p>
+            </li>
+            <li>
+              <img src={QualityIcon.src} alt="Quality icon" loading="lazy" />
+
+              <h3>High quality art</h3>
+              <p>Art made with extreme care and love. Our NFTs have been hand drawn, vectorized, coloured and lastly enhanced with rich textures. The end result is visual NFT art that obtains the <strong>maximum visual impact</strong>!</p>
+            </li>
+            <li>
+              <img src={DetailsIcon.src} alt="Details icon" loading="lazy" />
+
+              <h3>Attention to detail</h3>
+              <p>Our NFTs have been put through a <strong>rigorous analytical process</strong> using a suite of tools and manual user selection (<a href="https://en.wikipedia.org/wiki/Elo_rating_system" target="_blank" rel="noreferrer">ELO rating system</a>) to ensure the best trait combinations that <strong>look magical</strong>!</p>
             </li>
           </ul>
         </section>
 
         <section id="collection" className={styles.collection}>
-          <h2>The collection</h2>
+          <h2>The Collection</h2>
 
           <div>
             <div className={styles.stats}>
@@ -287,9 +288,9 @@ const Home: NextPage = () => {
               <div className={styles.infoBox}>
                 <h3>Art ❤️ Programming</h3>
 
-                <p>Out of 7M+ possible combinations, 20k metadata was generated. These combinations have been <strong>analyzed with tailor-made tools</strong> to guarantee that each token would be visually different from the rest by <strong>more than 1%</strong> of the image and the distribution of traits would meet expectations. The process has led to filtering 10k tokens, of which their respective images have been generated.</p>
+                <p>These are <span className='toUppercase'>NOT</span> your usual NFTs! This is a one of a kind, hand crafted, carefully selected and curated collection designed to amaze! Out of 7M+ possible combinations, only 20K were selected and metadata generated. These 20K have then been <strong>analyzed with tailor-made tools</strong> to guarantee that each token would be not only unique, but visually different from any other by a significant factor. In addition, trait selection has been carefully curated to ensure a <strong>varied distribution of traits</strong> that <strong>meet quality expectations</strong>. Throughout this process, 10K tokens were discarded, leaving 10K metadata tokens for which their respective images were generated.</p>
 
-                <p>The <a href="https://en.wikipedia.org/wiki/Elo_rating_system" target="_blank" rel="noreferrer">ELO rating system</a> was the secret weapon to permit the selection of the 1990 final tokens based on the <strong>real approval of a sample of selected NFT fans</strong>.</p>
+                <p>The <a href="https://en.wikipedia.org/wiki/Elo_rating_system" target="_blank" rel="noreferrer">ELO rating system</a> was the secret weapon used to select <span className='toUppercase'>ONLY</span> 1,990 final tokens out of 10K based on the <strong>approval of a sample of selected NFT fans</strong>. Only 1,990 NFT’s out of a possible 7 million!</p>
               </div>
 
               <img src={EloCharacters.src} alt="ELO character" loading="lazy" />
@@ -299,13 +300,17 @@ const Home: NextPage = () => {
 
         <section className={styles.animalCosplayContainer}>
           <div className={styles.introduction}>
-            <h2>Animal Cosplays</h2>
+            <div className={styles.infoBox}>
+              <h2>Animal Cosplays</h2>
 
-            <p>For a long time, in the NFT world, the daily question was &ldquo;what animal will characterize the next <strong>blue chip</strong>?&rdquo;. The animal represented on the tokens has often assumed almost more importance than everything else, so much so that it quickly became the object of MEMES and the reason for FUD.</p>
+              <p>For a long time, in the NFT world, the daily question was &ldquo;what animal will characterize the next <strong>blue chip</strong>?&rdquo;. The animal represented on the tokens has often assumed almost more importance than everything else, so much so that it quickly became the object of MEMES and the reason for FUD.</p>
 
-            <p>The characters of this collection do not love to be labelled with a certain animal species, they are &ldquo;<strong>Open Devs</strong>&rdquo;, but they do love dressing up in a fun and bizarre way. Five lucky tokens were officially elected as <strong>Animal Cosplay</strong> because of their ability to impersonate certain fellow animals.</p>
+              <p>The characters of this collection do not love to be labelled with a certain animal species, they are &ldquo;<strong>Open Devs</strong>&rdquo;, but they do love dressing up in a fun and bizarre way. Five lucky tokens were officially elected as <strong>Animal Cosplay</strong> because of their ability to impersonate certain fellow animals.</p>
 
-            <p>Down below you can discover the next one up <strong>in the reveal order</strong>, who will be the lucky minter?</p>
+              <p>Down below you can discover the next one up <strong>in the reveal order</strong>, who will be the lucky minter?</p>
+            </div>
+
+            <img src={AnymalCosplays.src} alt="Anymal cosplays" loading="lazy" />
           </div>
 
           <div className={styles.animals}>
@@ -330,15 +335,13 @@ const Home: NextPage = () => {
             <div className={styles.infoBox}>
               <h2>The Sad Gang</h2>
 
-              <p>The use of the <a href="https://en.wikipedia.org/wiki/Elo_rating_system" target="_blank" rel="noreferrer">ELO rating system</a> had mistakenly caused us to think that some traits would be excluded from the shortlist of the 1990 final tokens, but in reality, we hadn&apos;t reckoned with the enchanted FreaksPix&apos;s hands, that curated every layer to the point in which <strong>no trait would be completely excluded</strong> during the selection.</p>
+              <p>The use of the <a href="https://en.wikipedia.org/wiki/Elo_rating_system" target="_blank" rel="noreferrer">ELO rating system</a> initially made us think that some traits would be excluded from the shortlist in the 1,990 final tokens. In reality, our artist, FreaksPix, curated every layer to ensure that <strong>no trait would be completely excluded</strong> during the selection. Now, that’s dedication and passion!</p>
 
-              <p>Nevertheless, what we have noticed analysing the final tokens was a pretty evident point: our very valid <strong>selectors have always preferred happy and silly faces</strong>, in respect to those clearly sad. For this reason, for example, crying eyes were generally associated with smiling faces, in order to transform crying into tears of joy.</p>
+              <p>Nevertheless, we noticed during our analysis that our team of curators <strong>preferred happy and silly faces</strong> rather than those clearly sad. For this reason, for example, crying eyes were generally paired with smiling faces, turning them into tears of joy!</p>
 
-              <p>This is great and we wanted to respect the marvelous wave of positivity, but we are also aware that in life it would not be possible to truly appreciate joy without a trace of sadness every so often. For this reason, the &ldquo;<strong>Sad Gang</strong>&rdquo; was born.</p>
+              <p>This is great as we wanted our art to generally represent positivity, but we are also aware that in life it would not be possible to truly appreciate joy without a trace of sadness every so often. For this reason, the <strong>“Sad Gang”</strong> was born!</p>
 
-              <p>It is made up of the <strong>only three tokens</strong> in the entire collection that have an unequivocally sad expression and this makes them <strong>extremely rare</strong>.</p>
-
-              <p>Would you ever have imagined that the reveal of a sad token would have been able to cheer up its owner??</p>
+              <p>It is made up on <strong>only three tokens</strong> in the entire collection that have an unequivocally sad expression and this makes them <strong>extremely rare</strong>. Would you have ever imagined that the reveal of a sad face token would be able to bring joy to its owner?!</p>
             </div>
 
             <img src={SadGangCharacter.src} alt="Sad Gang character" />
@@ -350,16 +353,16 @@ const Home: NextPage = () => {
 
               <div className={styles.infoBox}>
               <h2>N** F** S***</h2>
-                <p>The identity of these tokens is <strong>top secret</strong>. Rumors reveal that some clues could already be hidden inside the first mints, but their true nature remains nevertheless a mystery.</p>
+                <p>What are these you may be wondering? The true identity of these tokens is <strong>top secret</strong>. Rumors reveal that some clues could already be hidden inside the first mints, but their true nature remains a mystery.</p>
 
-                <p>Only one thing is certain: these tokens are destined for true experts, only a <strong>diamond hand</strong> can hold onto a token so confident in itself...</p>
+                <p>The only thing is certain: these tokens are designed for true legends, only a <strong>diamond hand</strong> can hold onto a token so confident in itself!</p>
               </div>
             </div>
           </div>
         </section>
 
         <section id="team" className={styles.team}>
-          <h2>The team</h2>
+          <h2>The Team</h2>
           <ul>
             <li>
               <img src={LiarcoPic.src} alt="Liarco&apos;s picture" loading="lazy" />
@@ -459,9 +462,9 @@ const Home: NextPage = () => {
         </section>
 
         <section id="blueprint" className={styles.blueprint}>
-          <h2>The blueprint</h2>
+          <h2>The Blueprint</h2>
           
-          <p>Our roadmap <strong>is not</strong> based on unlocking achievements or reaching percentages. The Open Devs Crew brand, as a philosophy and activity, started in <strong>November of 2021</strong>. This collection is your <strong>opportunity</strong> to take part in and <strong>join us</strong> on this journey.</p>
+          <p>We are passionate about building long term value. Roadmaps as they have come to be known, don’t fully represent our ambitions. That’s why we have the blueprint. It <strong>is not</strong> based on unlocking achievement or reaching percentages. The Open Devs Crew brand, as a philosophy and activity, started in <strong>November 2021</strong>. This collection is your <strong>opportunity</strong> to take part and <strong>join us</strong> on this journey!</p>
  
           <p>The work of people like Liarco and HashLips, of companies like MEP Srl or communities like Sketchy Labs aims to give a friendly, welcoming, and safe format to web3. This is done through <strong>open source projects</strong>, <strong>educational materials</strong>, <strong>professional support</strong>, and the realization of products for web3 brands and also for <strong>traditional businesses</strong> that want to benefit from the interesting opportunities offered by <strong>decentralized technologies</strong>.</p>
 
@@ -477,10 +480,11 @@ const Home: NextPage = () => {
             <li>Preparation and team support for the participation in <strong>Hackathons</strong> promoted by various organizations in and outside the blockchain world. The funds generated by any awards, net of costs incurred, will be <strong>directly reinvested</strong> in the community.</li>
           </ul>
 
-          <p>The distribution of revenues <strong>directly in ETH</strong> is expected for all projects, in equal parts, to all of the holders (completely <strong>on-chain</strong> and <strong>without intermediaries</strong>, where applicable). This is made possible because by the &ldquo;<strong>Smart Community Wallet</strong>&rdquo;, a solution that allows for the distribution of funds earned from all of the activities through the NFTs present in each wallet (including <strong>all royalties</strong> paid on the secondary market).</p>
-          
+          <p>Any funds sent to the collection contract address (<strong>ETH</strong> or <strong>WETH</strong>) are automatically distributed, in equal parts, to all of the holders (completely <strong>on-chain</strong> and <strong>without intermediaries</strong>). This is made possible by the <strong>“Smart Community Wallet”</strong>, a solution that allows each holder to claim funds based on the amount of owned NFTs (including <strong>all the royalties</strong> paid on marketplaces supporting <strong>EIP-2981</strong>).</p>
+
+          <p>This behavior is completely decentralized and, since the Solidity contract won’t be upgradable, <strong>nobody</strong>, not even the founders, will ever be able to take control of it.</p>
+
           <p>You can discover more about all this, and examine the source code, in our <a href="https://github.com/liarco-network/open-devs-crew-collection" target="_blank" rel="noreferrer">GitHub repository</a>.</p>
-            
         </section>
 
         <footer className={styles.footer}>
