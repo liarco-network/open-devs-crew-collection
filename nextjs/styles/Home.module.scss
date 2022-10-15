@@ -262,23 +262,23 @@
     @apply pt-6 lg:pt-12;
 
     & > li {
-      @apply grid gap-x-2 lg:gap-x-6 gap-y-4 lg:gap-y-0;
+      @apply grid gap-x-4 lg:gap-x-4 gap-y-2 lg:gap-y-2;
 
       grid-template: 
-      "img title" 1.5rem
-      ".   body" / 1.5rem auto;
+      "img title" min-content
+      ".   body" / 2rem auto;
 
       @media (min-width: 1024px) {
         grid-template: 
-                        "img title" minmax(3rem, max-content)
-                        ".   body" / 3rem auto;
+                        "img title" min-content
+                        ".   body" / 2.5rem auto;
       }
 
       & img {
-        @apply w-6 lg:w-12;
-        @apply h-6 lg:h-12;
+        grid-row: 1 / span 2;
+        @apply w-8 lg:w-9;
+        @apply h-8 lg:h-9;
         @apply mx-auto;
-        @apply translate-y-[0.22rem] lg:translate-y-0;
       }
 
       & p {
