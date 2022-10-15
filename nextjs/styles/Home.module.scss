@@ -258,11 +258,11 @@
   padding-right: var(--padding-x);
 
   .keyPoints {
-    @apply grid lg:grid-cols-2 grid-flow-row gap-x-20 gap-y-10 lg:gap-y-10;
+    @apply grid lg:grid-cols-2 grid-flow-row gap-x-20 gap-y-10;
     @apply pt-6 lg:pt-12;
 
     & > li {
-      @apply grid gap-x-4 lg:gap-x-4 gap-y-2 lg:gap-y-2;
+      @apply grid gap-x-4 gap-y-2;
 
       grid-template: 
       "img title" min-content
