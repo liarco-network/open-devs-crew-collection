@@ -16,6 +16,9 @@ const config: HardhatUserConfig = {
       },
     },
   },
+  mocha: {
+    timeout: 120000,
+  },
   networks: {
     truffle: {
       url: 'http://localhost:24012/rpc',
