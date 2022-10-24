@@ -159,7 +159,7 @@
 
   & > div {
     @apply lg:grid grid-cols-2 gap-20;
-    @apply w-screen;
+    @apply w-full;
     max-width: var(--max-column-width);
     @apply mx-auto;
     @apply pt-20 pb-20 lg:pt-24 lg:pb-16;
@@ -735,7 +735,7 @@
   }
 }
 
-.partners {
+.web3Partners {
   box-shadow: inset 0 -10px 10px -10px rgb(0 0 0 / 30%), 
               inset 0px 15px 10px -10px rgb(0 0 0 / 30%);
   background-image: url('../assets/backgrounds/partners-bg.jpg');
@@ -756,6 +756,7 @@
 
     ul {
       @apply flex flex-col lg:grid grid-cols-3 gap-12 lg:gap-8;
+      @apply mb-16;
 
       & li {
         @apply flex flex-col gap-2 items-center;
@@ -768,13 +769,13 @@
         & h3 {
           @apply text-center;
         }
-
-        & p {
-          @apply text-center;
-
-          text-shadow: 0px 0px 1px white;
-        }
       }
+    }
+
+    p {
+      @apply text-center;
+
+      text-shadow: 0px 0px 1px white;
     }
   }
 }
@@ -782,7 +783,7 @@
 .blueprint {
   max-width: var(--max-column-width);
   @apply mx-auto;
-  @apply py-16;
+  @apply pt-16;
   padding-left: var(--padding-x);
   padding-right: var(--padding-x);
 
@@ -813,6 +814,56 @@
     li {
       @apply mb-2 last:mb-0;
     }
+
+    li::marker {
+      font-size: 1.3rem;
+    }
+  }
+}
+
+.additionalNotes {
+  max-width: var(--max-column-width);
+  @apply mx-auto;
+  @apply pt-8 pb-16;
+  padding-left: var(--padding-x);
+  padding-right: var(--padding-x);
+
+  h2 {
+    @apply text-base;
+  }
+
+  & > dl {
+    @apply text-sm;
+
+    & > div {
+      @apply flex gap-2;
+
+      &:target > dd {
+        @apply bg-amber-100;
+      }
+
+      dt {
+        @apply pt-4;
+        @apply font-bold;
+
+        &::before {
+          content: '[';
+        }
+
+        &::after {
+          content: ']';
+        }
+      }
+
+      dd {
+        @apply p-4;
+      }
+    }
+  }
+
+  ul {
+    @apply pl-8;
+    @apply list-disc;
 
     li::marker {
       font-size: 1.3rem;

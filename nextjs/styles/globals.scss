@@ -51,9 +51,19 @@ section {
       @apply decoration-sky-900 text-sky-900;
     }
 
-    &::after {
+    &[target="_blank"]::after {
       content: " 🔗";
       @apply inline;
+    }
+
+    &[href^="#additional-notes-"] {
+      &::before {
+        content: "[";
+      }
+
+      &::after {
+        content: "]";
+      }
     }
   }
 
