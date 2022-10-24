@@ -12,6 +12,14 @@ abstract contract SmartCommunityWallet is NftToken {
     STARTUP_FUNDS
   }
 
+  struct TokenData {
+    uint256 tokenId;
+    address ownerAddress;
+    uint64 ownershipStartTimestamp;
+    uint256 tokenBalance;
+    uint64 ownerLatestActivityTimestamp;
+  }
+
   uint256 public immutable DIAMOND_HANDS_HOLDER_TIME_FRAME;
   uint256 public immutable WHALE_ROLE_THRESHOLD;
   uint256 public immutable ADDRESS_INACTIVITY_TIME_FRAME;
@@ -34,8 +42,9 @@ abstract contract SmartCommunityWallet is NftToken {
   mapping(uint256 => uint256) public tokenIdToWithdrawnAmount;
 
   event UntrackedFundsReceived(address indexed from, uint256 amount);
-  event Deposit(address indexed from, uint256 amount);
+  event Donation(address indexed from, uint256 amount);
   event Withdrawal(WithdrawalType indexed withrawalType, address indexed to, uint256 amount);
+  event CustomErc20Withdrawal(address indexed tokenContractAddress, address indexed to, uint256 amount);
   event UpdatedAllowedAddressForCustomErc20TokensWithdrawal(address newAllowedAddress);
 
   error InsufficientFunds();
@@ -84,10 +93,10 @@ abstract contract SmartCommunityWallet is NftToken {
      emit UntrackedFundsReceived(msg.sender, msg.value);
   }
 
-  function deposit() public payable {
+  function donate() public payable {
     refreshWalletBalance();
 
-    emit Deposit(msg.sender, msg.value);
+    emit Donation(msg.sender, msg.value);
   }
 
   function getUntrackedFunds() public view returns (uint256) {
@@ -119,7 +128,7 @@ abstract contract SmartCommunityWallet is NftToken {
     return _getAux(_owner);
   }
 
-  function updateLatestWithdrawalTimestamp() public {
+  function refreshLatestWithdrawalTimestamp() public {
     _setAux(msg.sender, uint64(block.timestamp));
   }
 
@@ -156,7 +165,7 @@ abstract contract SmartCommunityWallet is NftToken {
       revert InvalidDiamondHandsHolderToken();
     }
 
-    updateLatestWithdrawalTimestamp();
+    refreshLatestWithdrawalTimestamp();
 
     for (uint16 i = 0; i < _tokenIds.length; i++) {
       if (ownerOf(_tokenIds[i]) != msg.sender) {
@@ -184,7 +193,7 @@ abstract contract SmartCommunityWallet is NftToken {
       revert OnlyWhalesCanWithdrawOnBehalfOfInactiveAddresses();
     }
 
-    updateLatestWithdrawalTimestamp();
+    refreshLatestWithdrawalTimestamp();
 
     for (uint16 i = 0; i < _tokenIds.length; i++) {
       /*
@@ -260,10 +269,13 @@ abstract contract SmartCommunityWallet is NftToken {
       }
 
       IERC20 erc20Token = IERC20(erc20TokenAddress);
+      uint256 tokenBalance = erc20Token.balanceOf(address(this));
 
-      if (!erc20Token.transfer(allowedAddressForCustomErc20TokensWithdrawal, erc20Token.balanceOf(address(this)))) {
+      if (!erc20Token.transfer(allowedAddressForCustomErc20TokensWithdrawal, tokenBalance)) {
         revert FailedWithdrawingFunds();
       }
+
+      emit CustomErc20Withdrawal(erc20TokenAddress, msg.sender, tokenBalance);
     }
   }
 
@@ -279,6 +291,44 @@ abstract contract SmartCommunityWallet is NftToken {
 
   function freezeAllowedAddressForCustomErc20TokensWithdrawal() public onlyOwner {
     canUpdateAllowedAddressForCustomErc20TokensWithdrawal = false;
+  }
+
+  function getTokenData(uint256 _tokenId) public view returns (TokenData memory) {
+    TokenOwnership memory ownership = _ownershipOf(_tokenId);
+
+    return TokenData(
+      _tokenId,
+      ownership.addr,
+      ownership.startTimestamp,
+      _getBalanceOfToken(_tokenId),
+      getLatestWithdrawalTimestamp(ownership.addr)
+    );
+  }
+
+  function getTokensData(uint256[] memory _tokenIds) public view returns (TokenData[] memory) {
+    TokenData[] memory tokensData = new TokenData[](_tokenIds.length);
+
+    for (uint256 i = 0; i < _tokenIds.length; i++) {
+      tokensData[i] = getTokenData(_tokenIds[i]);
+    }
+
+    return tokensData;
+  }
+
+  function getTokensDataInRange(uint256 _startId, uint256 _stopId) public view returns (TokenData[] memory) {
+    if (_startId < _startTokenId() || _stopId > totalSupply() || _startId > _stopId) {
+      revert InvalidQueryRange();
+    }
+
+    _stopId++;
+
+    TokenData[] memory tokensData = new TokenData[](_stopId - _startId);
+
+    for (uint256 i = _startId; i < _stopId; i++) {
+      tokensData[i - _startId] = getTokenData(i);
+    }
+
+    return tokensData;
   }
 
   function _getBalanceOfToken(uint256 _tokenId) internal view returns (uint256) {

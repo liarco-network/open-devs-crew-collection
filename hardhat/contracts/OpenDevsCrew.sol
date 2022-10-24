@@ -94,7 +94,7 @@ contract OpenDevsCrew is SmartCommunityWallet {
     10,
 
     // Hidden metadata URI
-    "ipfs://__CID__/hidden.json" // TODO: update this
+    "https://cdn.opendevs.io/tokens/public/hidden/metadata.json"
   ) {
     // Initial airdrops
     _mint(_LIARCO, 10);
@@ -153,7 +153,7 @@ contract OpenDevsCrew is SmartCommunityWallet {
    * It has taken a long time to get here, but now it's finally time to give
    * these artworks a new home on the blockchain!
    */
-  address constant _FREAKS_PIX = address(0x1); // TODO: update this
+  address constant _FREAKS_PIX = address(0x4372ec603b4E4ddEe322b6d00236854924D5Dc95);
 
   /*
    * A great friend and a fantastic business partner. Since the day we met,
@@ -287,5 +287,5 @@ contract OpenDevsCrew is SmartCommunityWallet {
    * ---
    * I wanna thank everyone for this great opportunity.
    */
-  address constant _MEP = address(0xe874e14eDAd0392AA3aA5a161555239f48401E95);
+  address constant _MEP = address(0x999Ee7a6734d06128F398741B604645A5e7C28E2);
 }

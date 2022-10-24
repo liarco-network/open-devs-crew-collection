@@ -293,6 +293,29 @@ describe('OpenDevsCrew', function () {
       expect(await openDevsCrew.startupFundsBalance()).to.be.equal(BigNumber.from(0));
     });
 
+    it('Check events emission (receiving funds)', async function () {
+      const { mepWallet, hashLipsWallet, partiallyMintedCollection: openDevsCrew } = await loadFixture(fixtures);
+      const genericWallet = wallet5;
+
+      // Fallback function
+      await expect(deployerWallet.sendTransaction({
+        from: deployerWallet.getAddress(),
+        to: openDevsCrew.address,
+        value: ethers.utils.parseEther('10'),
+      })).to.emit(openDevsCrew, 'UntrackedFundsReceived').withArgs(
+        await deployerWallet.getAddress(),
+        ethers.utils.parseEther('10'),
+      );
+
+      // Donation
+      await expect(openDevsCrew.connect(genericWallet).donate({
+        value: ethers.utils.parseEther('3'),
+      })).to.emit(openDevsCrew, 'Donation').withArgs(
+        await genericWallet.getAddress(),
+        ethers.utils.parseEther('3'),
+      );
+    });
+
     it('Check untracked funds distribution on empty collection', async function () {
       const { openDevsCrew } = await loadFixture(fixtures);
 
@@ -345,7 +368,7 @@ describe('OpenDevsCrew', function () {
       const initialStartupBalance = await openDevsCrew.startupFundsBalance();
       const mepAddress = mepWallet.getAddress();
       const hashLipsAddress = hashLipsWallet.getAddress();
-      
+
       let previousMepBalance = await ethers.provider.getBalance(mepAddress);
       let previousHashLipsBalance = await ethers.provider.getBalance(hashLipsAddress);
       let hashLipsLabShare = withdrawAmount.mul(await openDevsCrew.HASHLIPS_LAB_STARTUP_SHARE()).div(100);
@@ -409,6 +432,30 @@ describe('OpenDevsCrew', function () {
       );
     });
 
+    it('Check events emission (startup funds)', async function () {
+      const { mepWallet, hashLipsWallet, partiallyMintedCollection: openDevsCrew } = await loadFixture(fixtures);
+
+      const withdrawAmount = await openDevsCrew.startupFundsBalance();
+      const mepAddress = await mepWallet.getAddress();
+      const hashLipsAddress = await hashLipsWallet.getAddress();
+
+      // Make sure some funds are available
+      expect(withdrawAmount).gt(BigNumber.from(0));
+
+      let hashLipsLabShare = withdrawAmount.mul(await openDevsCrew.HASHLIPS_LAB_STARTUP_SHARE()).div(100);
+
+      await expect(openDevsCrew.withdrawStartupFunds(withdrawAmount))
+        .to.emit(openDevsCrew, 'Withdrawal').withArgs(
+          BigNumber.from(2),
+          mepAddress,
+          withdrawAmount.sub(hashLipsLabShare),
+        ).and.to.emit(openDevsCrew, 'Withdrawal').withArgs(
+          BigNumber.from(2),
+          hashLipsAddress,
+          hashLipsLabShare,
+        );
+    });
+
     // withdraw()
 
     it('Check withdraw of hodled minted token', async function () {
@@ -421,7 +468,10 @@ describe('OpenDevsCrew', function () {
       const previousWalletBalance = await ethers.provider.getBalance(minterOfPartiallyMintedCollection1.getAddress());
       const previousToken1Balance = await openDevsCrew.getBalanceOfToken(partialMintedTokens[0]);
       const previousToken2Balance = await openDevsCrew.getBalanceOfToken(partialMintedTokens[1]);
-      const txReceipt = await (await openDevsCrew.connect(minterOfPartiallyMintedCollection1).withdraw(partialMintedTokens[0], [partialMintedTokens[0], partialMintedTokens[1]])).wait();
+      const txReceipt = await (await openDevsCrew.connect(minterOfPartiallyMintedCollection1).withdraw(
+        partialMintedTokens[0],
+        [partialMintedTokens[0], partialMintedTokens[1]],
+      )).wait();
 
       expect(await openDevsCrew.getBalanceOfToken(partialMintedTokens[0])).eq(BigNumber.from('0'));
       expect(await openDevsCrew.getBalanceOfToken(partialMintedTokens[1])).eq(BigNumber.from('0'));
@@ -442,7 +492,8 @@ describe('OpenDevsCrew', function () {
 
       const previousWalletBalance = await ethers.provider.getBalance(minterOfPartiallyMintedCollection1.getAddress());
       const previousToken1Balance = await openDevsCrew.getBalanceOfToken(partialMintedTokens[0]);
-      const txReceipt = await (await openDevsCrew.connect(minterOfPartiallyMintedCollection1).withdraw(partialMintedTokens[0], [])).wait();
+      const txReceipt = await (await openDevsCrew.connect(minterOfPartiallyMintedCollection1)
+        .withdraw(partialMintedTokens[0], [])).wait();
 
       expect(await openDevsCrew.getBalanceOfToken(partialMintedTokens[0])).eq(previousToken1Balance);
       expect(await ethers.provider.getBalance(minterOfPartiallyMintedCollection1.getAddress())).eq(
@@ -487,7 +538,8 @@ describe('OpenDevsCrew', function () {
 
       await time.increase((await openDevsCrew.DIAMOND_HANDS_HOLDER_TIME_FRAME()).sub(60 * 60 * 24));
 
-      await expect(openDevsCrew.connect(minterOfPartiallyMintedCollection1).withdraw(partialMintedTokens[0], [partialMintedTokens[0], partialMintedTokens[1]]))
+      await expect(openDevsCrew.connect(minterOfPartiallyMintedCollection1)
+        .withdraw(partialMintedTokens[0], [partialMintedTokens[0], partialMintedTokens[1]]))
         .to.be.revertedWithCustomError(openDevsCrew, 'InvalidDiamondHandsHolderToken');
     });
 
@@ -507,7 +559,9 @@ describe('OpenDevsCrew', function () {
 
       await time.increase((await openDevsCrew.DIAMOND_HANDS_HOLDER_TIME_FRAME()).add(1));
 
-      await expect(openDevsCrew.connect(minterOfPartiallyMintedCollection1).withdraw(partialMintedTokens[0], [partialMintedTokens[3], partialMintedTokens[2], partialMintedTokens[1]])).to.be.fulfilled;
+      await expect(openDevsCrew.connect(minterOfPartiallyMintedCollection1)
+        .withdraw(partialMintedTokens[0], [partialMintedTokens[3], partialMintedTokens[2], partialMintedTokens[1]]))
+        .to.be.fulfilled;
     });
 
     it('Check withdraw of not owned token', async function () {
@@ -537,6 +591,23 @@ describe('OpenDevsCrew', function () {
 
       await expect(openDevsCrew.connect(nonHolder).withdraw(1, [1]))
         .to.be.revertedWithCustomError(openDevsCrew, 'TokenOwnershipDoesNotMatch');
+    });
+
+    it('Check events emission (regular)', async function () {
+      const { partiallyMintedCollection: openDevsCrew } = await loadFixture(fixtures);
+
+      const partialMintedTokens = await openDevsCrew.tokensOfOwner(await minterOfPartiallyMintedCollection1.getAddress());
+      await time.increase((await openDevsCrew.DIAMOND_HANDS_HOLDER_TIME_FRAME()).add(1));
+      const previousToken1Balance = await openDevsCrew.getBalanceOfToken(partialMintedTokens[0]);
+      const previousToken2Balance = await openDevsCrew.getBalanceOfToken(partialMintedTokens[1]);
+      await expect(openDevsCrew.connect(minterOfPartiallyMintedCollection1).withdraw(
+        partialMintedTokens[0],
+        [partialMintedTokens[0], partialMintedTokens[1]],
+      )).to.emit(openDevsCrew, 'Withdrawal').withArgs(
+        BigNumber.from(0),
+        await minterOfPartiallyMintedCollection1.getAddress(),
+        previousToken1Balance.add(previousToken2Balance),
+      );
     });
 
     // withdrawInactiveFunds()
@@ -592,19 +663,23 @@ describe('OpenDevsCrew', function () {
 
       const ownerBalance = await whaleWallet.getBalance();
       let tokenBalance = BigNumber.from(0);
-      
+
       for (const tokenId of partialMintedTokens) {
         tokenBalance = tokenBalance.add(await partialMinterContract.getBalanceOfToken(tokenId));
       }
 
       const whaleTokens = await openDevsCrew.tokensOfOwner(whaleWallet.getAddress());
 
-      const txReceipt = await (await whaleContract.withdrawInactiveFunds(whaleTokens[0], partialMintedTokens.map(tokenId => tokenId))).wait();
+      const txReceipt = await (await whaleContract.withdrawInactiveFunds(
+        whaleTokens[0],
+        partialMintedTokens.map(tokenId => tokenId),
+      )).wait();
 
       expect(await whaleWallet.getBalance()).to.be.equal(
         ownerBalance
           .add(tokenBalance)
-          .sub(txReceipt.gasUsed.mul(txReceipt.effectiveGasPrice)));
+          .sub(txReceipt.gasUsed.mul(txReceipt.effectiveGasPrice)),
+      );
     });
 
     it('Check withdrawal of inactive funds (not whale)', async function () {
@@ -627,10 +702,11 @@ describe('OpenDevsCrew', function () {
 
       const whaleTokens = await openDevsCrew.tokensOfOwner(whaleWallet.getAddress());
 
-      await expect(whaleContract.withdrawInactiveFunds(whaleTokens[0], [partialMintedTokens[0]])).to.be.revertedWithCustomError(
-        whaleContract,
-        'OnlyWhalesCanWithdrawOnBehalfOfInactiveAddresses'
-      );
+      await expect(whaleContract.withdrawInactiveFunds(whaleTokens[0], [partialMintedTokens[0]]))
+        .to.be.revertedWithCustomError(
+          whaleContract,
+          'OnlyWhalesCanWithdrawOnBehalfOfInactiveAddresses',
+        );
     });
 
     it('Check withdrawal of inactive funds (not diamond hands holder)', async function () {
@@ -653,10 +729,11 @@ describe('OpenDevsCrew', function () {
 
       const whaleTokens = await openDevsCrew.tokensOfOwner(whaleWallet.getAddress());
 
-      await expect(whaleContract.withdrawInactiveFunds(whaleTokens[0], [partialMintedTokens[0]])).to.be.revertedWithCustomError(
-        whaleContract,
-        'OnlyWhalesCanWithdrawOnBehalfOfInactiveAddresses'
-      );
+      await expect(whaleContract.withdrawInactiveFunds(whaleTokens[0], [partialMintedTokens[0]]))
+        .to.be.revertedWithCustomError(
+          whaleContract,
+          'OnlyWhalesCanWithdrawOnBehalfOfInactiveAddresses',
+        );
     });
 
     it('Check withdrawal of inactive funds (not inactive)', async function () {
@@ -679,10 +756,11 @@ describe('OpenDevsCrew', function () {
 
       const whaleTokens = await openDevsCrew.tokensOfOwner(whaleWallet.getAddress());
 
-      await expect(whaleContract.withdrawInactiveFunds(whaleTokens[0], [partialMintedTokens[0]])).to.be.revertedWithCustomError(
-        whaleContract,
-        'TokenIsOwnedByAnActiveAddress',
-      );
+      await expect(whaleContract.withdrawInactiveFunds(whaleTokens[0], [partialMintedTokens[0]]))
+        .to.be.revertedWithCustomError(
+          whaleContract,
+          'TokenIsOwnedByAnActiveAddress',
+        );
     });
 
     it('Check withdrawal of inactive funds (never withdrawn)', async function () {
@@ -697,7 +775,7 @@ describe('OpenDevsCrew', function () {
       for (let i = 0; i < whaleThreshold.toNumber(); i++) {
         await whaleContract.mint(1, { value: ethers.utils.parseEther('0.1') })
       }
-      
+
       for (const tokenId of partialMintedTokens) {
         expect((await openDevsCrew.getLatestWithdrawalTimestamp(await openDevsCrew.ownerOf(tokenId))).toNumber()).equals(0);
       }
@@ -720,7 +798,7 @@ describe('OpenDevsCrew', function () {
       const partialMintedTokens = await openDevsCrew.tokensOfOwner(minterOfPartiallyMintedCollection2.getAddress());
       const partialMinterContract = openDevsCrew.connect(minterOfPartiallyMintedCollection2);
 
-      await newHolderContract.updateLatestWithdrawalTimestamp();
+      await newHolderContract.refreshLatestWithdrawalTimestamp();
 
       await time.increase((await openDevsCrew.DIAMOND_HANDS_HOLDER_TIME_FRAME()).add(1));
 
@@ -731,7 +809,11 @@ describe('OpenDevsCrew', function () {
       await time.increase((await openDevsCrew.ADDRESS_INACTIVITY_TIME_FRAME()).add(1));
 
       for (const tokenId of partialMintedTokens) {
-        (await partialMinterContract.transferFrom(minterOfPartiallyMintedCollection2.getAddress(), newHolderWallet.getAddress(), tokenId)).wait();
+        (await partialMinterContract.transferFrom(
+          minterOfPartiallyMintedCollection2.getAddress(),
+          newHolderWallet.getAddress(),
+          tokenId,
+        )).wait();
 
         expect(await openDevsCrew.ownerOf(tokenId)).equals(await newHolderWallet.getAddress());
       }
@@ -744,7 +826,43 @@ describe('OpenDevsCrew', function () {
         .to.be.revertedWithCustomError(whaleContract, 'TokenIsOwnedByAnActiveAddress');
     });
 
-    // non payable wallets
+    it('Check events emission (inactive funds)', async function () {
+      const { partiallyMintedCollection: openDevsCrew } = await loadFixture(fixtures);
+      const whaleThreshold = await openDevsCrew.WHALE_ROLE_THRESHOLD();
+      const whaleWallet = wallet5;
+      const whaleContract = openDevsCrew.connect(whaleWallet);
+      const partialMinterContract = openDevsCrew.connect(minterOfPartiallyMintedCollection2);
+      const partialMintedTokens = (await openDevsCrew.tokensOfOwner(await minterOfPartiallyMintedCollection2.getAddress()))
+        .concat(await openDevsCrew.tokensOfOwner(minterOfPartiallyMintedCollection1.getAddress()));
+
+      await time.increase((await openDevsCrew.DIAMOND_HANDS_HOLDER_TIME_FRAME()).add(1));
+
+      for (let i = 0; i < whaleThreshold.toNumber(); i++) {
+        await whaleContract.mint(1, { value: ethers.utils.parseEther('0.1') })
+      }
+
+      await partialMinterContract.withdraw(partialMintedTokens[0], [partialMintedTokens[1], partialMintedTokens[0]]);
+
+      await time.increase((await openDevsCrew.ADDRESS_INACTIVITY_TIME_FRAME()).add(1));
+
+      const ownerBalance = await whaleWallet.getBalance();
+      let tokenBalance = BigNumber.from(0);
+
+      for (const tokenId of partialMintedTokens) {
+        tokenBalance = tokenBalance.add(await partialMinterContract.getBalanceOfToken(tokenId));
+      }
+
+      const whaleTokens = await openDevsCrew.tokensOfOwner(whaleWallet.getAddress());
+
+      await expect(whaleContract.withdrawInactiveFunds(whaleTokens[0], partialMintedTokens.map(tokenId => tokenId)))
+        .to.emit(openDevsCrew, 'Withdrawal').withArgs(
+          BigNumber.from(1),
+          await whaleWallet.getAddress(),
+          tokenBalance,
+        );
+    });
+
+    // Non payable wallets
 
     it('Check startup non payable wallet withdraw', async function () {
       const {
@@ -752,10 +870,10 @@ describe('OpenDevsCrew', function () {
         openDevsCrewMepWalletMock,
       } = await loadFixture(fixtures);
 
-      await openDevsCrewBrokenHashLipsWalletsMock.deposit({
+      await openDevsCrewBrokenHashLipsWalletsMock.donate({
         value: ethers.utils.parseEther('20')}
       );
-      await openDevsCrewMepWalletMock.deposit({
+      await openDevsCrewMepWalletMock.donate({
         value: ethers.utils.parseEther('20')}
       );
 
@@ -806,10 +924,9 @@ describe('OpenDevsCrew', function () {
       const nonPayableContractWalletMockTokens = await openDevsCrew.tokensOfOwner(nonPayableContractWalletMock.address);
 
       await expect(nonPayableContractWalletMock.withdrawInactiveFunds(
-        nonPayableContractWalletMockTokens[0],
-        [partialMintedTokens[1]],
-      ))
-        .to.be.revertedWithCustomError(openDevsCrew, 'FailedWithdrawingFunds');
+          nonPayableContractWalletMockTokens[0],
+          [partialMintedTokens[1]],
+        )).to.be.revertedWithCustomError(openDevsCrew, 'FailedWithdrawingFunds');
     });
 
     // _beforeTokenTransfers()
@@ -827,10 +944,22 @@ describe('OpenDevsCrew', function () {
 
       const partialMintedTokens = await openDevsCrew.tokensOfOwner(await genericWallet.getAddress());
 
-      await genericWalletContract.withdraw(partialMintedTokens[0], [partialMintedTokens[0], partialMintedTokens[1], partialMintedTokens[2], partialMintedTokens[3], partialMintedTokens[4]]);
+      await genericWalletContract.withdraw(
+        partialMintedTokens[0],
+        [
+          partialMintedTokens[0],
+          partialMintedTokens[1],
+          partialMintedTokens[2],
+          partialMintedTokens[3],
+          partialMintedTokens[4],
+        ],
+      );
 
-      await expect(genericWalletContract.transferFrom(genericWallet.getAddress(), genericReceiver.getAddress(), partialMintedTokens[0]))
-        .to.be.revertedWithCustomError(genericWalletContract, 'TransferringTooEarlyAfterWithdrawal');
+      await expect(genericWalletContract.transferFrom(
+        genericWallet.getAddress(),
+        genericReceiver.getAddress(),
+        partialMintedTokens[0]),
+      ).to.be.revertedWithCustomError(genericWalletContract, 'TransferringTooEarlyAfterWithdrawal');
     });
 
     it('Check transfer after cooldown', async function () {
@@ -846,15 +975,27 @@ describe('OpenDevsCrew', function () {
       await time.increase((await openDevsCrew.DIAMOND_HANDS_HOLDER_TIME_FRAME()).add(1));
       const partialMintedTokens = await openDevsCrew.tokensOfOwner(await genericWallet.getAddress());
 
-      await genericWalletContract.withdraw(partialMintedTokens[0], [partialMintedTokens[0], partialMintedTokens[1], partialMintedTokens[2], partialMintedTokens[3], partialMintedTokens[4]]);
+      await genericWalletContract.withdraw(
+        partialMintedTokens[0],
+        [
+          partialMintedTokens[0],
+          partialMintedTokens[1],
+          partialMintedTokens[2],
+          partialMintedTokens[3],
+          partialMintedTokens[4],
+        ],
+      );
 
       await time.increase(transferCooldown.add(1));
 
-      expect(await genericWalletContract.transferFrom(genericWallet.getAddress(), genericReceiver.getAddress(), partialMintedTokens[0]))
-        .to.not.be.reverted;
+      expect(await genericWalletContract.transferFrom(
+        genericWallet.getAddress(),
+        genericReceiver.getAddress(),
+        partialMintedTokens[0],
+      )).to.not.be.reverted;
     });
 
-    // weth
+    // WETH
 
     it('Check WETH transfer', async function () {
       const { openDevsCrew, weth } = await loadFixture(fixtures);
@@ -866,11 +1007,11 @@ describe('OpenDevsCrew', function () {
       expect(await weth.balanceOf(await genericWallet.getAddress())).to.be.equal(ethers.utils.parseEther('0'));
 
       await genericWethContract.deposit({ value: ethToWethValue });
-            
+
       expect(await weth.balanceOf(await genericWallet.getAddress())).to.be.equal(ethToWethValue);
 
       await genericWethContract.transfer(openDevsCrew.address, ethToWethValue);
-      
+
       await openDevsCrew.refreshWalletBalance();
 
       expect(await weth.balanceOf(await genericWallet.getAddress())).to.be.equal(ethers.utils.parseEther('0'));
@@ -898,27 +1039,28 @@ describe('OpenDevsCrew', function () {
 
       expect(await openDevsCrew.communityBalance()).to.be.equal(expectedCommunityBalance.add(initialCommunityBalance));
 
-      expect(await openDevsCrew.startupFundsBalance()).to.be.equal(expectedCommunityBalance.sub(initialUntrackedFunds).add(initialStartupBalance));
+      expect(await openDevsCrew.startupFundsBalance())
+        .to.be.equal(expectedCommunityBalance.sub(initialUntrackedFunds).add(initialStartupBalance));
     });
 
-    // erc20
+    // Custom ERC20
 
     it('Check ERC20 withdraw', async function () {
       const { openDevsCrew,  erc20TokenMock } = await loadFixture(fixtures);
       const genericWallet = wallet6;
       const secondaryWallet = wallet7;
       const secondaryWalletAddress = await secondaryWallet.getAddress();
-      
+
       const erc20TokensNumber = BigNumber.from(5);
 
       const genericErc20Contract = await erc20TokenMock.connect(genericWallet);
-      
+
       expect(await genericErc20Contract.balanceOf(openDevsCrew.address)).to.be.equal(BigNumber.from(0));
-      
+
       await genericErc20Contract.mint(openDevsCrew.address, erc20TokensNumber);
-      
+
       expect(await genericErc20Contract.balanceOf(openDevsCrew.address)).to.be.equal(erc20TokensNumber);
-      
+
       await openDevsCrew.updateAllowedAddressForCustomErc20TokensWithdrawal(secondaryWalletAddress);
 
       const secondaryOpenDevsContract = await openDevsCrew.connect(secondaryWallet);
@@ -934,7 +1076,7 @@ describe('OpenDevsCrew', function () {
     it('Check ERC20 withdraw not allowed', async function () {
       const { openDevsCrew,  erc20TokenMock } = await loadFixture(fixtures);
       const genericWallet = wallet6;
-                              
+
       const genericOpenDevsContract = await openDevsCrew.connect(genericWallet);
 
       await expect(genericOpenDevsContract.withdrawCustomErc20Funds(
@@ -947,7 +1089,7 @@ describe('OpenDevsCrew', function () {
       const genericWallet = wallet6;
       const secondaryWallet = wallet7;
       const secondaryWalletAddress = await secondaryWallet.getAddress();
-      
+
       const erc20TokensNumber = BigNumber.from(5);
 
       const genericErc20Contract = await erc20TokenMock.connect(genericWallet);
@@ -967,7 +1109,7 @@ describe('OpenDevsCrew', function () {
       const { openDevsCrew, weth } = await loadFixture(fixtures);
       const genericWallet = wallet6;
       const genericWalletAddress = await genericWallet.getAddress();
-                  
+
       await openDevsCrew.updateAllowedAddressForCustomErc20TokensWithdrawal(genericWalletAddress);
 
       const genericOpenDevsContract = await openDevsCrew.connect(genericWallet);
@@ -999,7 +1141,7 @@ describe('OpenDevsCrew', function () {
       const { openDevsCrew, erc20TokenMock, erc20DeployerAddress } = await loadFixture(fixtures);
 
       const erc20DeployerWallet = await erc20DeployerAddress.getAddress();
-      
+
       const erc20DeployerOpenDevsContract = await openDevsCrew.connect(erc20DeployerAddress);
       await openDevsCrew.updateAllowedAddressForCustomErc20TokensWithdrawal(erc20DeployerWallet);
 
@@ -1015,14 +1157,114 @@ describe('OpenDevsCrew', function () {
       expect(await openDevsCrew.canUpdateAllowedAddressForCustomErc20TokensWithdrawal()).to.be.true;
 
       await openDevsCrew.updateAllowedAddressForCustomErc20TokensWithdrawal(await genericWallet.getAddress());
-      
+
       await openDevsCrew.freezeAllowedAddressForCustomErc20TokensWithdrawal();
-      
+
       expect(await openDevsCrew.canUpdateAllowedAddressForCustomErc20TokensWithdrawal()).to.be.false;
 
       await expect(
         openDevsCrew.updateAllowedAddressForCustomErc20TokensWithdrawal(openDevsCrew.address)
       ).to.be.revertedWithCustomError(openDevsCrew, 'AllowedAddressForCustomErc20TokensWithdrawalIsFrozen');
+    });
+
+    it('Check events emission (custom ERC20 tokens)', async function () {
+      const { openDevsCrew,  erc20TokenMock } = await loadFixture(fixtures);
+      const genericWallet = wallet6;
+      const secondaryWallet = wallet7;
+      const secondaryWalletAddress = await secondaryWallet.getAddress();
+
+      const erc20TokensNumber = BigNumber.from(5);
+
+      const genericErc20Contract = await erc20TokenMock.connect(genericWallet);
+
+      await genericErc20Contract.mint(openDevsCrew.address, erc20TokensNumber);
+
+      await expect(openDevsCrew.updateAllowedAddressForCustomErc20TokensWithdrawal(secondaryWalletAddress))
+        .to.emit(openDevsCrew, 'UpdatedAllowedAddressForCustomErc20TokensWithdrawal').withArgs(
+          secondaryWalletAddress,
+        );
+
+      const secondaryOpenDevsContract = await openDevsCrew.connect(secondaryWallet);
+
+      await expect(secondaryOpenDevsContract.withdrawCustomErc20Funds([erc20TokenMock.address]))
+        .to.emit(openDevsCrew, 'CustomErc20Withdrawal').withArgs(
+          erc20TokenMock.address,
+          await secondaryWallet.getAddress(),
+          erc20TokensNumber,
+        );
+    });
+
+    // TokenData
+
+    it('Check TokenData queries', async function () {
+      const { partiallyMintedCollection: openDevsCrew } = await loadFixture(fixtures);
+      type TokenData = {
+        tokenId: BigNumber;
+        ownerAddress: string;
+        ownershipStartTimestamp: BigNumber;
+        tokenBalance: BigNumber;
+        ownerLatestActivityTimestamp: BigNumber;
+      }
+      const verifyTokenData = (data: TokenData, expectedData: TokenData): void => {
+        expect(data.ownerAddress).eq(expectedData.ownerAddress);
+        expect(data.ownershipStartTimestamp).eq(expectedData.ownershipStartTimestamp);
+        expect(data.tokenBalance).eq(expectedData.tokenBalance);
+        expect(data.ownerLatestActivityTimestamp).eq(expectedData.ownerLatestActivityTimestamp);
+      };
+
+      await openDevsCrew.refreshWalletBalance();
+      await openDevsCrew.connect(minterOfPartiallyMintedCollection1).refreshLatestWithdrawalTimestamp();
+
+      // Non-existent token
+      await expect(openDevsCrew.getTokenData(0)).to.revertedWithCustomError(openDevsCrew, 'OwnerQueryForNonexistentToken');
+      await expect(openDevsCrew.getTokenData((await openDevsCrew.totalSupply()).add(1)))
+        .to.revertedWithCustomError(openDevsCrew, 'OwnerQueryForNonexistentToken');
+
+      const tokenData1 = {
+        tokenId: BigNumber.from(1),
+        ownerAddress: await openDevsCrew.ownerOf(1),
+        ownershipStartTimestamp: (await openDevsCrew.explicitOwnershipOf(1)).startTimestamp,
+        tokenBalance: await openDevsCrew.getBalanceOfToken(1),
+        ownerLatestActivityTimestamp: BigNumber.from(0),
+      };
+
+      const tokenData33 = {
+        tokenId: BigNumber.from(33),
+        ownerAddress: await openDevsCrew.ownerOf(33),
+        ownershipStartTimestamp: (await openDevsCrew.explicitOwnershipOf(33)).startTimestamp,
+        tokenBalance: await openDevsCrew.getBalanceOfToken(33),
+        ownerLatestActivityTimestamp: await openDevsCrew.getLatestWithdrawalTimestamp(minterOfPartiallyMintedCollection1.getAddress()),
+      }
+
+      const tokenData35 = {
+        tokenId: BigNumber.from(35),
+        ownerAddress: await openDevsCrew.ownerOf(35),
+        ownershipStartTimestamp: (await openDevsCrew.explicitOwnershipOf(35)).startTimestamp,
+        tokenBalance: await openDevsCrew.getBalanceOfToken(35),
+        ownerLatestActivityTimestamp: await openDevsCrew.getLatestWithdrawalTimestamp(minterOfPartiallyMintedCollection2.getAddress()),
+      }
+
+      // Single query
+      verifyTokenData(await openDevsCrew.getTokenData(1), tokenData1);
+      verifyTokenData(await openDevsCrew.getTokenData(33), tokenData33);
+
+      // Multiple query (specific tokens)
+      const specificTokensData = await openDevsCrew.getTokensData([1, 33]);
+      verifyTokenData(specificTokensData[0], tokenData1);
+      verifyTokenData(specificTokensData[1], tokenData33);
+
+      // Multiple query (range)
+      const tokensDataInRange = await openDevsCrew.getTokensDataInRange(33, 36);
+      verifyTokenData(tokensDataInRange[0], tokenData33);
+      verifyTokenData(tokensDataInRange[1], {...tokenData33, tokenId: BigNumber.from(34)});
+      verifyTokenData(tokensDataInRange[2], tokenData35);
+      verifyTokenData(tokensDataInRange[3], {...tokenData35, tokenId: BigNumber.from(36)});
+
+      // Invalid range
+      await expect(openDevsCrew.getTokensDataInRange(0, 12)).to.revertedWithCustomError(openDevsCrew, 'InvalidQueryRange');
+      await expect(openDevsCrew.getTokensDataInRange(0, 42)).to.revertedWithCustomError(openDevsCrew, 'InvalidQueryRange');
+      await expect(openDevsCrew.getTokensDataInRange(1, 42)).to.revertedWithCustomError(openDevsCrew, 'InvalidQueryRange');
+      await expect(openDevsCrew.getTokensDataInRange(33, 10)).to.revertedWithCustomError(openDevsCrew, 'InvalidQueryRange');
     });
   });
 
@@ -1075,8 +1317,9 @@ describe('OpenDevsCrew', function () {
 
     it('Check setUri with metadata freeze', async function () {
       const { openDevsCrew } = await loadFixture(fixtures);
-      
-      await expect(openDevsCrew.freezeMetadata()).to.be.revertedWithCustomError(openDevsCrew, 'CannotFreezeMetadataBeforeReveal');
+
+      await expect(openDevsCrew.freezeMetadata())
+        .to.be.revertedWithCustomError(openDevsCrew, 'CannotFreezeMetadataBeforeReveal');
 
       await openDevsCrew.setUriPrefix('testPrefix');
       await openDevsCrew.setHiddenMetadataUri('testHiddenPrefix');
@@ -1084,7 +1327,8 @@ describe('OpenDevsCrew', function () {
       await expect(openDevsCrew.freezeMetadata()).to.not.be.reverted;
 
       await expect(openDevsCrew.setUriPrefix('test')).to.be.revertedWithCustomError(openDevsCrew, 'MetadataIsFrozen');
-      await expect(openDevsCrew.setHiddenMetadataUri('testHidden')).to.be.revertedWithCustomError(openDevsCrew, 'MetadataIsFrozen');
+      await expect(openDevsCrew.setHiddenMetadataUri('testHidden'))
+        .to.be.revertedWithCustomError(openDevsCrew, 'MetadataIsFrozen');
     });
 
     it('Check tokenUri', async function () {
@@ -1095,7 +1339,8 @@ describe('OpenDevsCrew', function () {
       const testHiddenMetadataUri = 'hiddenMetadataUriTest';
       await openDevsCrew.setHiddenMetadataUri(testHiddenMetadataUri);
 
-      await expect(openDevsCrew.tokenURI(TEST_TOKEN_ID)).to.be.revertedWithCustomError(openDevsCrew, 'URIQueryForNonexistentToken');
+      await expect(openDevsCrew.tokenURI(TEST_TOKEN_ID))
+        .to.be.revertedWithCustomError(openDevsCrew, 'URIQueryForNonexistentToken');
 
       const token_price = await openDevsCrew.TOKEN_PRICE();
 
