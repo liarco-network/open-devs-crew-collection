@@ -66,14 +66,15 @@ contract OpenDevsCrew is SmartCommunityWallet {
     address(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2),
 
     /*
-     * HashLips Lab's share of startup funds (Daniel only, in order to avoid
+     * Donation to the HashLips Lab as a tribute for the educational and open
+     * source work done for the Web3 space. (Daniel only, in order to avoid
      * useless round trips).
      */
     2, // %
     _HASHLIPS, // Wallet
 
     /*
-     * MEP's share of startup funds.
+     * MEP's share of startup funds to help with community activities.
      */
     _MEP // Wallet (% is implicitly 98%)
   )
