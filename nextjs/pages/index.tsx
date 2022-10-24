@@ -514,14 +514,14 @@ const Home: NextPage = () => {
                 </p>
                 <ul>
                   <li>Withdraw funds, if any, from at least one of its tokens</li>
-                  <li>Call the <strong>refreshLatestWithdrawalTimestamp()</strong> function on the smart contract</li>
+                  <li>Refresh the latest withdrawal timestamp by calling the dedicated public function on the smart contract</li>
                 </ul>
                 <p>
                   Whales will be able to <strong>withdraw funds, if any, from tokens owned by inactive wallets</strong>. This is allowed in order to make so that funds won&apos;t get stuck in case some tokens get lost or become inaccessible for any reasons (e.g. private key is lost or the NFT is accidentally transferred to a dead wallet).
                 </p>
 
                 <p>
-                  After a wallet has performed <strong>any actions that update its activity status</strong>, then any transfer of tokens <strong>from</strong> the same address <strong>will be rejected for 24h</strong>. This <strong>is intended to mitigate misconduct</strong> such as withdrawing immediately before accepting an offer.
+                  After a wallet has performed <strong>any actions that update its activity status</strong>, then any transfer of tokens <strong>from</strong> the same address <strong>will be rejected for the next 24 hours</strong>. This <strong>is intended to mitigate misconduct</strong> such as withdrawing immediately before accepting an offer.
                 </p>
 
                 <p>
