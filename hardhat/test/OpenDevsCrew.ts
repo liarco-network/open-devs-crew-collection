@@ -261,11 +261,11 @@ describe('OpenDevsCrew', function () {
       const { openDevsCrew } = await loadFixture(fixtures);
 
       expect(await openDevsCrew.communityBalance()).to.be.equal(BigNumber.from(0));
-      expect(await openDevsCrew.startupFundsBalance()).to.be.equal(BigNumber.from(0));
+      expect(await openDevsCrew.mintFundsBalance()).to.be.equal(BigNumber.from(0));
       await openDevsCrew.refreshWalletBalance();
 
       expect(await openDevsCrew.communityBalance()).to.be.equal(BigNumber.from(0));
-      expect(await openDevsCrew.startupFundsBalance()).to.be.equal(BigNumber.from(0));
+      expect(await openDevsCrew.mintFundsBalance()).to.be.equal(BigNumber.from(0));
     });
 
     it('Refresh wallet (sold-out)', async function () {
@@ -273,8 +273,8 @@ describe('OpenDevsCrew', function () {
 
       const ownerContract = openDevsCrew.connect(deployerWallet);
 
-      const startupFundsBalance = await openDevsCrew.startupFundsBalance()
-      await ownerContract.withdrawStartupFunds(startupFundsBalance);
+      const mintFundsBalance = await openDevsCrew.mintFundsBalance()
+      await ownerContract.withdrawMintFunds(mintFundsBalance);
 
       await deployerWallet.sendTransaction({
         from: deployerWallet.getAddress(),
@@ -285,12 +285,12 @@ describe('OpenDevsCrew', function () {
       const finalUntrackedFunds = await openDevsCrew.getUntrackedFunds();
       const initialCommunityBalance = await openDevsCrew.communityBalance();
 
-      expect(await openDevsCrew.startupFundsBalance()).to.be.equal(BigNumber.from(0));
+      expect(await openDevsCrew.mintFundsBalance()).to.be.equal(BigNumber.from(0));
 
       await openDevsCrew.refreshWalletBalance();
 
       expect(await openDevsCrew.communityBalance()).to.be.equal(initialCommunityBalance.add(finalUntrackedFunds));
-      expect(await openDevsCrew.startupFundsBalance()).to.be.equal(BigNumber.from(0));
+      expect(await openDevsCrew.mintFundsBalance()).to.be.equal(BigNumber.from(0));
     });
 
     it('Check events emission (receiving funds)', async function () {
@@ -334,7 +334,7 @@ describe('OpenDevsCrew', function () {
 
       expect(initialUntrackedFunds).to.be.equal(expectedValue);
       expect(await openDevsCrew.communityBalance()).to.be.equal(BigNumber.from(0));
-      expect(await openDevsCrew.startupFundsBalance()).to.be.equal(BigNumber.from(0));
+      expect(await openDevsCrew.mintFundsBalance()).to.be.equal(BigNumber.from(0));
 
       await openDevsCrew.refreshWalletBalance();
 
@@ -342,7 +342,7 @@ describe('OpenDevsCrew', function () {
 
       expect(await openDevsCrew.getUntrackedFunds()).to.be.equal(BigNumber.from(0));
       expect(await openDevsCrew.communityBalance()).to.be.equal(expectedCommunityBalance);
-      expect(await openDevsCrew.startupFundsBalance()).to.be.equal(initialUntrackedFunds.sub(expectedCommunityBalance));
+      expect(await openDevsCrew.mintFundsBalance()).to.be.equal(initialUntrackedFunds.sub(expectedCommunityBalance));
     });
 
     // getBalanceOfToken()
@@ -359,23 +359,23 @@ describe('OpenDevsCrew', function () {
       await expect(openDevsCrew.getBalanceOfToken(3000)).to.be.revertedWithCustomError(openDevsCrew, 'InvalidTokenId');
     });
 
-    // withdrawStartupFunds()
+    // withdrawMintFunds()
 
     it('Check startup funds withdraw', async function () {
       const { collectionWithFunds: openDevsCrew, mepWallet, hashLipsWallet } = await loadFixture(fixtures);
 
       const withdrawAmount = ethers.utils.parseEther('10');
-      const initialStartupBalance = await openDevsCrew.startupFundsBalance();
+      const initialStartupBalance = await openDevsCrew.mintFundsBalance();
       const mepAddress = mepWallet.getAddress();
       const hashLipsAddress = hashLipsWallet.getAddress();
 
       let previousMepBalance = await ethers.provider.getBalance(mepAddress);
       let previousHashLipsBalance = await ethers.provider.getBalance(hashLipsAddress);
-      let hashLipsLabShare = withdrawAmount.mul(await openDevsCrew.HASHLIPS_LAB_STARTUP_SHARE()).div(100);
+      let hashLipsLabShare = withdrawAmount.mul(await openDevsCrew.HASHLIPS_LAB_MINT_SHARE()).div(100);
 
-      await openDevsCrew.withdrawStartupFunds(withdrawAmount);
+      await openDevsCrew.withdrawMintFunds(withdrawAmount);
 
-      expect(await openDevsCrew.startupFundsBalance()).to.be.equal(initialStartupBalance.sub(withdrawAmount));
+      expect(await openDevsCrew.mintFundsBalance()).to.be.equal(initialStartupBalance.sub(withdrawAmount));
       expect(await ethers.provider.getBalance(mepAddress)).eq(
         previousMepBalance
           .add(withdrawAmount.sub(hashLipsLabShare))
@@ -387,12 +387,12 @@ describe('OpenDevsCrew', function () {
 
       previousMepBalance = await ethers.provider.getBalance(mepAddress);
       previousHashLipsBalance = await ethers.provider.getBalance(hashLipsAddress);
-      hashLipsLabShare = withdrawAmount.mul(await openDevsCrew.HASHLIPS_LAB_STARTUP_SHARE()).div(100);
+      hashLipsLabShare = withdrawAmount.mul(await openDevsCrew.HASHLIPS_LAB_MINT_SHARE()).div(100);
 
-      await openDevsCrew.withdrawStartupFunds(withdrawAmount);
-      await openDevsCrew.withdrawStartupFunds(withdrawAmount);
+      await openDevsCrew.withdrawMintFunds(withdrawAmount);
+      await openDevsCrew.withdrawMintFunds(withdrawAmount);
 
-      expect(await openDevsCrew.startupFundsBalance()).to.be.equal(initialStartupBalance.sub(withdrawAmount.mul(3)));
+      expect(await openDevsCrew.mintFundsBalance()).to.be.equal(initialStartupBalance.sub(withdrawAmount.mul(3)));
       expect(await ethers.provider.getBalance(mepAddress)).eq(
         previousMepBalance
           .add(withdrawAmount.sub(hashLipsLabShare))
@@ -407,7 +407,7 @@ describe('OpenDevsCrew', function () {
       previousMepBalance = await ethers.provider.getBalance(mepAddress);
       previousHashLipsBalance = await ethers.provider.getBalance(hashLipsAddress);
 
-      expect(await openDevsCrew.startupFundsBalance()).to.be.equal(initialStartupBalance.sub(withdrawAmount.mul(3)));
+      expect(await openDevsCrew.mintFundsBalance()).to.be.equal(initialStartupBalance.sub(withdrawAmount.mul(3)));
       expect(await ethers.provider.getBalance(mepAddress)).eq(previousMepBalance);
       expect(await ethers.provider.getBalance(hashLipsAddress)).eq(previousHashLipsBalance);
     });
@@ -415,18 +415,18 @@ describe('OpenDevsCrew', function () {
     it('Check startup funds full withdraw', async function () {
       const { collectionWithFunds: openDevsCrew } = await loadFixture(fixtures);
 
-      const initialStartupBalance = await openDevsCrew.startupFundsBalance();
-      await openDevsCrew.withdrawStartupFunds(initialStartupBalance);
+      const initialStartupBalance = await openDevsCrew.mintFundsBalance();
+      await openDevsCrew.withdrawMintFunds(initialStartupBalance);
 
-      expect(await openDevsCrew.startupFundsBalance()).to.be.equal(0);
+      expect(await openDevsCrew.mintFundsBalance()).to.be.equal(0);
     });
 
     it('Check startup funds withdraw over limit', async function () {
       const { collectionWithFunds: openDevsCrew } = await loadFixture(fixtures);
 
-      const initialStartupBalance = await openDevsCrew.startupFundsBalance();
+      const initialStartupBalance = await openDevsCrew.mintFundsBalance();
 
-      await expect(openDevsCrew.withdrawStartupFunds(initialStartupBalance.add('1'))).to.be.revertedWithCustomError(
+      await expect(openDevsCrew.withdrawMintFunds(initialStartupBalance.add('1'))).to.be.revertedWithCustomError(
         openDevsCrew,
         'InsufficientFunds',
       );
@@ -435,16 +435,16 @@ describe('OpenDevsCrew', function () {
     it('Check events emission (startup funds)', async function () {
       const { mepWallet, hashLipsWallet, partiallyMintedCollection: openDevsCrew } = await loadFixture(fixtures);
 
-      const withdrawAmount = await openDevsCrew.startupFundsBalance();
+      const withdrawAmount = await openDevsCrew.mintFundsBalance();
       const mepAddress = await mepWallet.getAddress();
       const hashLipsAddress = await hashLipsWallet.getAddress();
 
       // Make sure some funds are available
       expect(withdrawAmount).gt(BigNumber.from(0));
 
-      let hashLipsLabShare = withdrawAmount.mul(await openDevsCrew.HASHLIPS_LAB_STARTUP_SHARE()).div(100);
+      let hashLipsLabShare = withdrawAmount.mul(await openDevsCrew.HASHLIPS_LAB_MINT_SHARE()).div(100);
 
-      await expect(openDevsCrew.withdrawStartupFunds(withdrawAmount))
+      await expect(openDevsCrew.withdrawMintFunds(withdrawAmount))
         .to.emit(openDevsCrew, 'Withdrawal').withArgs(
           BigNumber.from(2),
           mepAddress,
@@ -879,11 +879,11 @@ describe('OpenDevsCrew', function () {
 
       await openDevsCrewBrokenHashLipsWalletsMock.refreshWalletBalance();
 
-      await expect(openDevsCrewBrokenHashLipsWalletsMock.withdrawStartupFunds(1)).to.be.revertedWithCustomError(
+      await expect(openDevsCrewBrokenHashLipsWalletsMock.withdrawMintFunds(1)).to.be.revertedWithCustomError(
         openDevsCrewBrokenHashLipsWalletsMock,
         'FailedWithdrawingFunds',
       );
-      await expect(openDevsCrewMepWalletMock.withdrawStartupFunds(1)).to.be.revertedWithCustomError(
+      await expect(openDevsCrewMepWalletMock.withdrawMintFunds(1)).to.be.revertedWithCustomError(
         openDevsCrewMepWalletMock,
         'FailedWithdrawingFunds',
       );
@@ -1032,14 +1032,14 @@ describe('OpenDevsCrew', function () {
       await openDevsCrew.refreshWalletBalance();
 
       const initialCommunityBalance = await openDevsCrew.communityBalance();
-      const initialStartupBalance = await openDevsCrew.startupFundsBalance();
+      const initialStartupBalance = await openDevsCrew.mintFundsBalance();
 
       const initialUntrackedFunds = await openDevsCrew.getUntrackedFunds();
       const expectedCommunityBalance = communityShareFunction(initialUntrackedFunds, MAX_SUPPLY, totalSupply);
 
       expect(await openDevsCrew.communityBalance()).to.be.equal(expectedCommunityBalance.add(initialCommunityBalance));
 
-      expect(await openDevsCrew.startupFundsBalance())
+      expect(await openDevsCrew.mintFundsBalance())
         .to.be.equal(expectedCommunityBalance.sub(initialUntrackedFunds).add(initialStartupBalance));
     });
 

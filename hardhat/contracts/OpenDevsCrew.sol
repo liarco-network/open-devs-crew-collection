@@ -74,7 +74,7 @@ contract OpenDevsCrew is SmartCommunityWallet {
     _HASHLIPS, // Wallet
 
     /*
-     * MEP's share of startup funds to help with community activities.
+     * MEP's share of mint funds to help with community activities.
      */
     _MEP // Wallet (% is implicitly 98%)
   )
@@ -283,7 +283,7 @@ contract OpenDevsCrew is SmartCommunityWallet {
 
   /*
    * The company MEP Srl is sponsoring my work since day one and it's providing
-   * support for the startup process of this project.
+   * support with the launch of this project.
    *
    * ---
    * I wanna thank everyone for this great opportunity.

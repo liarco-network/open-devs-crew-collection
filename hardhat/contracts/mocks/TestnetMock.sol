@@ -21,7 +21,7 @@ contract TestnetMock is SmartCommunityWallet {
     // WETH address on Goerli network
     address(0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6),
 
-    // _hashLipsLabStartupShare
+    // _hashLipsLabMintShare
     2,
 
     // _hashLipsLabAddress

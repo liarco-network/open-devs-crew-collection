@@ -9,7 +9,7 @@ abstract contract SmartCommunityWallet is NftToken {
   enum WithdrawalType {
     REGULAR,
     INACTIVE_FUNDS,
-    STARTUP_FUNDS
+    MINT_FUNDS
   }
 
   struct TokenData {
@@ -28,11 +28,11 @@ abstract contract SmartCommunityWallet is NftToken {
   IWETH9 public immutable WETH_CONTRACT;
 
   address public immutable HASHLIPS_LAB_ADDRESS;
-  uint256 public immutable HASHLIPS_LAB_STARTUP_SHARE;
+  uint256 public immutable HASHLIPS_LAB_MINT_SHARE;
   address public immutable MEP_ADDRESS;
 
   uint256 public communityBalance = 0;
-  uint256 public startupFundsBalance = 0;
+  uint256 public mintFundsBalance = 0;
   uint256 public totalFundsRaisedByCommunity = 0;
 
   address public allowedAddressForCustomErc20TokensWithdrawal;
@@ -65,7 +65,7 @@ abstract contract SmartCommunityWallet is NftToken {
     uint256 _transferCooldownAfterWithdrawal,
     uint256 _addressInactivityTimeFrame,
     address _wethContractAddress,
-    uint256 _hashLipsLabStartupShare,
+    uint256 _hashLipsLabMintShare,
     address _hashLipsLabAddress,
     address _mepAddress
   ) {
@@ -76,7 +76,7 @@ abstract contract SmartCommunityWallet is NftToken {
 
     WETH_CONTRACT = IWETH9(payable(_wethContractAddress));
 
-    HASHLIPS_LAB_STARTUP_SHARE = _hashLipsLabStartupShare;
+    HASHLIPS_LAB_MINT_SHARE = _hashLipsLabMintShare;
     HASHLIPS_LAB_ADDRESS = _hashLipsLabAddress;
 
     MEP_ADDRESS = _mepAddress;
@@ -100,7 +100,7 @@ abstract contract SmartCommunityWallet is NftToken {
   }
 
   function getUntrackedFunds() public view returns (uint256) {
-    uint256 rawUntrackedFunds = address(this).balance - communityBalance - startupFundsBalance;
+    uint256 rawUntrackedFunds = address(this).balance - communityBalance - mintFundsBalance;
 
     return rawUntrackedFunds - (rawUntrackedFunds % MAX_SUPPLY);
   }
@@ -121,7 +121,7 @@ abstract contract SmartCommunityWallet is NftToken {
 
     uint256 communityShare = (untrackedFunds / MAX_SUPPLY) * totalSupply;
     communityBalance += communityShare;
-    startupFundsBalance += untrackedFunds - communityShare;
+    mintFundsBalance += untrackedFunds - communityShare;
   }
 
   function getLatestWithdrawalTimestamp(address _owner) public view returns (uint64) {
@@ -224,14 +224,14 @@ abstract contract SmartCommunityWallet is NftToken {
     emit Withdrawal(WithdrawalType.INACTIVE_FUNDS, msg.sender, withdrawableAmount);
   }
 
-  function withdrawStartupFunds(uint256 _amount) public onlyOwner {
-    if (_amount > startupFundsBalance) {
+  function withdrawMintFunds(uint256 _amount) public onlyOwner {
+    if (_amount > mintFundsBalance) {
       revert InsufficientFunds();
     }
 
-    uint256 hashLipsLabAmount = _amount * HASHLIPS_LAB_STARTUP_SHARE / 100;
+    uint256 hashLipsLabAmount = _amount * HASHLIPS_LAB_MINT_SHARE / 100;
     uint256 mepAmount = _amount - hashLipsLabAmount;
-    startupFundsBalance -= _amount;
+    mintFundsBalance -= _amount;
 
     // HashLips Lab
     // =============================================================================
@@ -241,7 +241,7 @@ abstract contract SmartCommunityWallet is NftToken {
       revert FailedWithdrawingFunds();
     }
 
-    emit Withdrawal(WithdrawalType.STARTUP_FUNDS, HASHLIPS_LAB_ADDRESS, hashLipsLabAmount);
+    emit Withdrawal(WithdrawalType.MINT_FUNDS, HASHLIPS_LAB_ADDRESS, hashLipsLabAmount);
     // =============================================================================
 
     // MEP
@@ -252,7 +252,7 @@ abstract contract SmartCommunityWallet is NftToken {
       revert FailedWithdrawingFunds();
     }
 
-    emit Withdrawal(WithdrawalType.STARTUP_FUNDS, MEP_ADDRESS, mepAmount);
+    emit Withdrawal(WithdrawalType.MINT_FUNDS, MEP_ADDRESS, mepAmount);
     // =============================================================================
   }
 
