@@ -517,7 +517,7 @@ const Home: NextPage = () => {
                   <li>Call the <strong>refreshLatestWithdrawalTimestamp()</strong> function on the smart contract</li>
                 </ul>
                 <p>
-                  Whales will be able to <strong>withdraw funds, if any, from tokens owned by inactive wallets</strong>. This is allowed in order to make so that funds won't get stuck in case some tokens get lost or become inaccessible for any reasons (e.g. private key is lost or the NFT is accidentally transferred to a dead wallet).
+                  Whales will be able to <strong>withdraw funds, if any, from tokens owned by inactive wallets</strong>. This is allowed in order to make so that funds won&apos;t get stuck in case some tokens get lost or become inaccessible for any reasons (e.g. private key is lost or the NFT is accidentally transferred to a dead wallet).
                 </p>
 
                 <p>
