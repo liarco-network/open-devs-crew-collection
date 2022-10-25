@@ -351,23 +351,25 @@ abstract contract SmartCommunityWallet is NftToken {
     return withdrawableAmount;
   }
 
+  function _beforeMint(uint256 _startTokenId, uint256 _quantity) internal override {
+    refreshWalletBalance();
+
+    uint256 stopId = _startTokenId + _quantity;
+
+    // Withdrawn funds of new tokens must be reset at mint
+    for (uint256 i = _startTokenId; i < stopId; i++) {
+      _resetWithdrawableAmount(i);
+    }
+
+    return;
+  }
+
   function _beforeTokenTransfers(
     address _from,
     address /* _to */,
-    uint256 _startTokenId,
-    uint256 _quantity
-  ) internal override {
-    if (_from == address(0)) {
-      // Withdrawn funds of new tokens must be reset at mint
-      refreshWalletBalance();
-
-      for (uint256 i = _startTokenId; i <= _startTokenId + _quantity; i++) {
-        _resetWithdrawableAmount(i);
-      }
-
-      return;
-    }
-
+    uint256 /* _startTokenId */,
+    uint256 /* _quantity */
+  ) internal view override {
     if (getLatestWithdrawalTimestamp(_from) + TRANSFER_COOLDOWN_AFTER_WITHDRAWAL > block.timestamp) {
       revert TransferringTooEarlyAfterWithdrawal();
     }

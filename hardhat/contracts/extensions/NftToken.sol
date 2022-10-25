@@ -36,6 +36,8 @@ abstract contract NftToken is Ownable, ERC721AQueryable, IERC2981 {
     setHiddenMetadataUri(_hiddenMetadataUri);
   }
 
+  function _beforeMint(uint256 _startTokenId, uint256 _quantity) internal virtual;
+
   function _startTokenId() override internal view virtual returns (uint256) {
     return 1;
   }
@@ -53,6 +55,7 @@ abstract contract NftToken is Ownable, ERC721AQueryable, IERC2981 {
       revert RequestedAmountExceedsMaxSupply();
     }
 
+    _beforeMint(_nextTokenId(), _amount);
     _safeMint(msg.sender, _amount);
   }
 

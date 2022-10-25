@@ -338,11 +338,49 @@ describe('OpenDevsCrew', function () {
 
       await openDevsCrew.refreshWalletBalance();
 
-      const expectedCommunityBalance = communityShareFunction(initialUntrackedFunds,MAX_SUPPLY, totalSupply);
+      const expectedCommunityBalance = communityShareFunction(initialUntrackedFunds, MAX_SUPPLY, totalSupply);
 
       expect(await openDevsCrew.getUntrackedFunds()).to.be.equal(BigNumber.from(0));
       expect(await openDevsCrew.communityBalance()).to.be.equal(expectedCommunityBalance);
       expect(await openDevsCrew.mintFundsBalance()).to.be.equal(initialUntrackedFunds.sub(expectedCommunityBalance));
+    });
+
+    it('Check funds distribution during mint', async function () {
+      const { openDevsCrew } = await loadFixture(fixtures);
+      const minter1 = wallet5;
+      const minter2 = wallet6;
+
+      await openDevsCrew.connect(minter1).mint(5, { value: ethers.utils.parseEther('0.1').mul(5) });
+
+      await deployerWallet.sendTransaction({
+        from: deployerWallet.getAddress(),
+        to: openDevsCrew.address,
+        value: ethers.utils.parseEther('10'),
+      });
+
+      await openDevsCrew.connect(minter2).mint(5, { value: ethers.utils.parseEther('0.1').mul(5) });
+
+      const tokensOfMinter1 = await openDevsCrew.tokensOfOwner(minter1.getAddress());
+      const tokensOfMinter2 = await openDevsCrew.tokensOfOwner(minter2.getAddress());
+
+      expect (tokensOfMinter1.length).eq(5);
+      expect (tokensOfMinter2.length).eq(5);
+
+      expect(await Promise.all(tokensOfMinter1.map(async tokenId => await openDevsCrew.getBalanceOfToken(tokenId))))
+        .deep.eq(new Array(tokensOfMinter1.length).fill(
+          ethers.utils.parseEther('10').add(ethers.utils.parseEther('0.1').mul(5)).div(1990),
+        ));
+      expect(await Promise.all(tokensOfMinter2.map(async tokenId => await openDevsCrew.getBalanceOfToken(tokenId))))
+        .deep.eq(new Array(tokensOfMinter2.length).fill(BigNumber.from(0)));
+
+      await openDevsCrew.refreshWalletBalance();
+
+      expect(await Promise.all(tokensOfMinter1.map(async tokenId => await openDevsCrew.getBalanceOfToken(tokenId))))
+        .deep.eq(new Array(tokensOfMinter1.length).fill(
+          ethers.utils.parseEther('10').add(ethers.utils.parseEther('0.1').mul(5)).div(1990),
+        ));
+      expect(await Promise.all(tokensOfMinter2.map(async tokenId => await openDevsCrew.getBalanceOfToken(tokenId))))
+        .deep.eq(new Array(tokensOfMinter2.length).fill(BigNumber.from(0)));
     });
 
     // getBalanceOfToken()
@@ -1197,7 +1235,7 @@ describe('OpenDevsCrew', function () {
     // TokenData
 
     it('Check TokenData queries', async function () {
-      const { partiallyMintedCollection: openDevsCrew } = await loadFixture(fixtures);
+      const { partiallyMintedCollection, fullyMintedCollection } = await loadFixture(fixtures);
       type TokenData = {
         tokenId: BigNumber;
         ownerAddress: string;
@@ -1205,66 +1243,74 @@ describe('OpenDevsCrew', function () {
         tokenBalance: BigNumber;
         ownerLatestActivityTimestamp: BigNumber;
       }
-      const verifyTokenData = (data: TokenData, expectedData: TokenData): void => {
-        expect(data.ownerAddress).eq(expectedData.ownerAddress);
-        expect(data.ownershipStartTimestamp).eq(expectedData.ownershipStartTimestamp);
-        expect(data.tokenBalance).eq(expectedData.tokenBalance);
-        expect(data.ownerLatestActivityTimestamp).eq(expectedData.ownerLatestActivityTimestamp);
+      const verifyTokenData = async (data: TokenData, tokenId: BigNumber, contract: OpenDevsCrew): Promise<boolean> => {
+        const ownerAddress = await contract.ownerOf(tokenId);
+
+        return data.tokenId.eq(tokenId) &&
+          data.ownerAddress === ownerAddress &&
+          data.ownershipStartTimestamp.eq((await contract.explicitOwnershipOf(tokenId)).startTimestamp) &&
+          data.tokenBalance.eq(await contract.getBalanceOfToken(tokenId)) &&
+          data.ownerLatestActivityTimestamp.eq(await contract.getLatestWithdrawalTimestamp(ownerAddress));
       };
 
-      await openDevsCrew.refreshWalletBalance();
-      await openDevsCrew.connect(minterOfPartiallyMintedCollection1).refreshLatestWithdrawalTimestamp();
+      await partiallyMintedCollection.refreshWalletBalance();
+      await partiallyMintedCollection.connect(minterOfPartiallyMintedCollection1).refreshLatestWithdrawalTimestamp();
 
       // Non-existent token
-      await expect(openDevsCrew.getTokenData(0)).to.revertedWithCustomError(openDevsCrew, 'OwnerQueryForNonexistentToken');
-      await expect(openDevsCrew.getTokenData((await openDevsCrew.totalSupply()).add(1)))
-        .to.revertedWithCustomError(openDevsCrew, 'OwnerQueryForNonexistentToken');
-
-      const tokenData1 = {
-        tokenId: BigNumber.from(1),
-        ownerAddress: await openDevsCrew.ownerOf(1),
-        ownershipStartTimestamp: (await openDevsCrew.explicitOwnershipOf(1)).startTimestamp,
-        tokenBalance: await openDevsCrew.getBalanceOfToken(1),
-        ownerLatestActivityTimestamp: BigNumber.from(0),
-      };
-
-      const tokenData33 = {
-        tokenId: BigNumber.from(33),
-        ownerAddress: await openDevsCrew.ownerOf(33),
-        ownershipStartTimestamp: (await openDevsCrew.explicitOwnershipOf(33)).startTimestamp,
-        tokenBalance: await openDevsCrew.getBalanceOfToken(33),
-        ownerLatestActivityTimestamp: await openDevsCrew.getLatestWithdrawalTimestamp(minterOfPartiallyMintedCollection1.getAddress()),
-      }
-
-      const tokenData35 = {
-        tokenId: BigNumber.from(35),
-        ownerAddress: await openDevsCrew.ownerOf(35),
-        ownershipStartTimestamp: (await openDevsCrew.explicitOwnershipOf(35)).startTimestamp,
-        tokenBalance: await openDevsCrew.getBalanceOfToken(35),
-        ownerLatestActivityTimestamp: await openDevsCrew.getLatestWithdrawalTimestamp(minterOfPartiallyMintedCollection2.getAddress()),
-      }
+      await expect(partiallyMintedCollection.getTokenData(0)).to.revertedWithCustomError(partiallyMintedCollection, 'OwnerQueryForNonexistentToken');
+      await expect(partiallyMintedCollection.getTokenData((await partiallyMintedCollection.totalSupply()).add(1)))
+        .to.revertedWithCustomError(partiallyMintedCollection, 'OwnerQueryForNonexistentToken');
 
       // Single query
-      verifyTokenData(await openDevsCrew.getTokenData(1), tokenData1);
-      verifyTokenData(await openDevsCrew.getTokenData(33), tokenData33);
+      expect(await verifyTokenData(
+        await partiallyMintedCollection.getTokenData(1),
+        BigNumber.from(1),
+        partiallyMintedCollection
+      )).true;
+      expect(await verifyTokenData(
+        await partiallyMintedCollection.getTokenData(33),
+        BigNumber.from(33),
+        partiallyMintedCollection
+      )).true;
 
       // Multiple query (specific tokens)
-      const specificTokensData = await openDevsCrew.getTokensData([1, 33]);
-      verifyTokenData(specificTokensData[0], tokenData1);
-      verifyTokenData(specificTokensData[1], tokenData33);
+      const specificTokensData = await partiallyMintedCollection.getTokensData([1, 33]);
+      expect(await verifyTokenData(specificTokensData[0], BigNumber.from(1), partiallyMintedCollection)).true;
+      expect(await verifyTokenData(specificTokensData[1], BigNumber.from(33), partiallyMintedCollection)).true;
+      expect(specificTokensData.length).eq(2);
 
       // Multiple query (range)
-      const tokensDataInRange = await openDevsCrew.getTokensDataInRange(33, 36);
-      verifyTokenData(tokensDataInRange[0], tokenData33);
-      verifyTokenData(tokensDataInRange[1], {...tokenData33, tokenId: BigNumber.from(34)});
-      verifyTokenData(tokensDataInRange[2], tokenData35);
-      verifyTokenData(tokensDataInRange[3], {...tokenData35, tokenId: BigNumber.from(36)});
+      const tokensDataInRange = await partiallyMintedCollection.getTokensDataInRange(33, 36);
+      expect(await verifyTokenData(tokensDataInRange[0], BigNumber.from(33), partiallyMintedCollection)).true;
+      expect(await verifyTokenData(tokensDataInRange[1], BigNumber.from(34), partiallyMintedCollection)).true;
+      expect(await verifyTokenData(tokensDataInRange[2], BigNumber.from(35), partiallyMintedCollection)).true;
+      expect(await verifyTokenData(tokensDataInRange[3], BigNumber.from(36), partiallyMintedCollection)).true;
+      expect(tokensDataInRange.length).eq(4);
+
+      // Multiple query (full range)
+      const partialMintTotalSupply = await partiallyMintedCollection.totalSupply();
+      const fullPartialMintTokensDataInRange = await partiallyMintedCollection.getTokensDataInRange(1, partialMintTotalSupply);
+      expect(fullPartialMintTokensDataInRange.length).eq(partialMintTotalSupply);
+      expect(await Promise.all(fullPartialMintTokensDataInRange.map(
+        async (data, index) => await verifyTokenData(data, BigNumber.from(index + 1), partiallyMintedCollection),
+      ))).deep.eq(new Array(partialMintTotalSupply.toNumber()).fill(true));
+
+      const totalSupply = await fullyMintedCollection.totalSupply();
+      const fullTokensDataInRange = await fullyMintedCollection.getTokensDataInRange(1, totalSupply);
+      expect(fullTokensDataInRange.length).eq(totalSupply);
+      expect(await Promise.all(fullTokensDataInRange.map(
+        async (data, index) => await verifyTokenData(data, BigNumber.from(index + 1), fullyMintedCollection),
+      ))).deep.eq(new Array(totalSupply.toNumber()).fill(true));
 
       // Invalid range
-      await expect(openDevsCrew.getTokensDataInRange(0, 12)).to.revertedWithCustomError(openDevsCrew, 'InvalidQueryRange');
-      await expect(openDevsCrew.getTokensDataInRange(0, 42)).to.revertedWithCustomError(openDevsCrew, 'InvalidQueryRange');
-      await expect(openDevsCrew.getTokensDataInRange(1, 42)).to.revertedWithCustomError(openDevsCrew, 'InvalidQueryRange');
-      await expect(openDevsCrew.getTokensDataInRange(33, 10)).to.revertedWithCustomError(openDevsCrew, 'InvalidQueryRange');
+      await expect(partiallyMintedCollection.getTokensDataInRange(0, 12))
+        .to.revertedWithCustomError(partiallyMintedCollection, 'InvalidQueryRange');
+      await expect(partiallyMintedCollection.getTokensDataInRange(0, 42))
+        .to.revertedWithCustomError(partiallyMintedCollection, 'InvalidQueryRange');
+      await expect(partiallyMintedCollection.getTokensDataInRange(1, 42))
+        .to.revertedWithCustomError(partiallyMintedCollection, 'InvalidQueryRange');
+      await expect(partiallyMintedCollection.getTokensDataInRange(33, 10))
+        .to.revertedWithCustomError(partiallyMintedCollection, 'InvalidQueryRange');
     });
   });
 
