@@ -1,0 +1,177 @@
+.logo {
+  @apply m-auto mt-12 mb-8;
+  @apply w-72;
+}
+
+.mainText {
+  max-width: var(--max-column-width);
+  @apply mx-auto;
+  @apply pb-16;
+  padding-left: var(--padding-x);
+  padding-right: var(--padding-x);
+
+  h2 {
+    @apply mb-6 lg:mb-8;
+    @apply text-center;
+  }
+
+  & > p,
+  & > ul,
+  & > h3,
+  & > div {
+    @apply max-w-screen-md;
+    @apply mx-auto;
+    @apply mb-8;
+  }
+
+  & > p {
+    @apply last:mb-4 lg:last:mb-8;
+  }
+
+  & .noPaddingParagraph {
+    @apply mb-0;
+  }
+
+  ul {
+    @apply pl-8;
+    @apply list-disc;
+
+    li {
+      @apply mb-2 last:mb-0;
+    }
+
+    li::marker {
+      font-size: 1.3rem;
+    }
+  }
+}
+
+.examplesTableWrapper {
+  @apply overflow-x-scroll;
+}
+
+.examplesTable {
+  @apply w-full;
+  @apply text-xs text-center;
+  @apply border-collapse border border-slate-400;
+  @apply overflow-x-scroll;
+
+  thead {
+    @apply bg-slate-50;
+  }
+
+  th, td {
+    @apply border border-slate-300;
+  }
+}
+
+.footer {
+  box-shadow: inset 0 -10px 10px -10px rgb(0 0 0 / 30%), 
+  inset 0px 15px 10px -10px rgb(0 0 0 / 30%);
+  background-image: url('../assets/backgrounds/footer-bg.jpg');
+  @apply bg-no-repeat;
+  @apply bg-cover;
+  @apply bg-center;
+
+  & div {
+    @apply flex flex-col lg:flex-row justify-between gap-4 lg:gap-0;
+
+    max-width: var(--max-column-width);
+    @apply items-center;
+    @apply mx-auto;
+    @apply py-8;
+    padding-left: var(--padding-x);
+    padding-right: var(--padding-x);
+
+    & > button > img {
+      @apply max-w-[75%];
+      @apply mx-auto lg:mx-0;
+    }
+
+    & .socials {
+      @apply w-auto;
+      @apply lg:mx-0;
+
+      & li {
+        &.github {
+          @apply bg-black;
+        }
+        
+        &.twitter {
+          @apply bg-white;
+        }
+      }
+    }
+  }
+}
+
+.socials {
+  @apply flex flex-row justify-center;
+  @apply gap-4;
+  @apply mx-auto;
+
+  & li {
+    @apply w-10;
+    @apply h-10;
+    @apply rounded-full;
+    @apply drop-shadow-lg;
+    
+    &.twitter {      
+      & > a {
+        @apply flex;
+        @apply w-full;
+        @apply h-full;
+
+        & > img {
+          @apply translate-y-[1px];
+          @apply w-2/3;
+          @apply h-auto;
+          @apply m-auto;
+        }
+      }
+    }
+  }
+}
+
+#githubContainer {
+  @apply fixed;
+  @apply hover:flex flex-row gap-2 items-center;
+  @apply w-10 hover:w-max;
+  @apply h-10;
+  @apply left-auto right-6 bottom-6 md:right-10 md:bottom-8;
+  @apply p-[0.3rem] hover:pr-2 hover:pl-3 hover:py-2;
+  @apply cursor-pointer;
+  @apply rounded-full;
+  @apply bg-slate-800 hover:bg-slate-700;
+  @apply transition-all;
+  @apply drop-shadow-md hover:drop-shadow-lg shadow-slate-500 hover:shadow-slate-600;
+  @apply z-50;
+
+  & > p {
+    display: none;
+  }
+
+  &:hover {
+    & > p {
+      @apply inline-block;
+      @apply pt-[1pt];
+      @apply font-semibold;
+      @apply text-slate-50;
+    }
+
+    & > img {
+      @apply w-auto;
+      @apply h-full;
+    }
+  }
+
+  &.githubButtonView {
+    @apply duration-500;
+    @apply translate-x-0;
+  }
+  
+  &.githubButtonHidden {
+    @apply duration-200;
+    @apply translate-x-20;
+  }
+}
