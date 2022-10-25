@@ -373,14 +373,22 @@ describe('OpenDevsCrew', function () {
       expect(await Promise.all(tokensOfMinter2.map(async tokenId => await openDevsCrew.getBalanceOfToken(tokenId))))
         .deep.eq(new Array(tokensOfMinter2.length).fill(BigNumber.from(0)));
 
-      await openDevsCrew.refreshWalletBalance();
+      await openDevsCrew.connect(minter1).mint(5, { value: ethers.utils.parseEther('0.1').mul(5) });
 
       expect(await Promise.all(tokensOfMinter1.map(async tokenId => await openDevsCrew.getBalanceOfToken(tokenId))))
         .deep.eq(new Array(tokensOfMinter1.length).fill(
-          ethers.utils.parseEther('10').add(ethers.utils.parseEther('0.1').mul(5)).div(1990),
+          ethers.utils.parseEther('10').add(ethers.utils.parseEther('0.1').mul(10))
+          // We have to add the reminder of divison from the previous mint
+          .add(ethers.utils.parseEther('10').add(ethers.utils.parseEther('0.1').mul(10)).mod(1990))
+          .div(1990),
         ));
       expect(await Promise.all(tokensOfMinter2.map(async tokenId => await openDevsCrew.getBalanceOfToken(tokenId))))
-        .deep.eq(new Array(tokensOfMinter2.length).fill(BigNumber.from(0)));
+        .deep.eq(new Array(tokensOfMinter2.length).fill(
+          ethers.utils.parseEther('0.1').mul(5)
+          // We have to add the reminder of divison from the previous mint
+          .add(ethers.utils.parseEther('10').add(ethers.utils.parseEther('0.1').mul(10)).mod(1990))
+          .div(1990)
+        ));
     });
 
     // getBalanceOfToken()
