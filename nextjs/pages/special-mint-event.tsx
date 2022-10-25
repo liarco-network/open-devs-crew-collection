@@ -38,8 +38,8 @@ const Home: NextPage = () => {
           
           <p>
             Hi everyone, <a href="https://twitter.com/marco_lipparini" target="_blank" rel="noreferrer">Liarco</a> here! 😃<br />
-            I'm super excited to announce that we are gonna have a <strong>special mint event</strong> for holders of the three
-            Web3 communities I'm proudly part of:
+            I&apos;m super excited to announce that we are gonna have a <strong>special mint event</strong> for holders of the three
+            Web3 communities I&apos;m proudly part of:
           </p>
 
           <ul>
@@ -49,8 +49,8 @@ const Home: NextPage = () => {
           </ul>
 
           <p>
-            I'm part of just a few communities because I'm not very attracted by pure NFT trading, I'm more on the development side of things, but I really love the positive vibe I always feel when I check out Twitter and Discord from these three brands.<br />
-            That's why I want to give an additional chance to these holders to get <strong>one more token</strong> from the <a href="https://opendevs.io/" target="_blank" rel="noreferrer">Open Devs Crew</a> collection for free!
+            I&apos;m part of just a few communities because I&apos;m not very attracted by pure NFT trading, I&apos;m more on the development side of things, but I really love the positive vibe I always feel when I check out Twitter and Discord from these three brands.<br />
+            That&apos;s why I want to give an additional chance to these holders to get <strong>one more token</strong> from the <a href="https://opendevs.io/" target="_blank" rel="noreferrer">Open Devs Crew</a> collection for free!
           </p>
 
           <h3>Here is how it works</h3>
@@ -61,13 +61,13 @@ const Home: NextPage = () => {
           </p>
 
           <ul>
-            <li><strong>You don't have to register anywhere</strong> or do anything in order to participate. Owning a partner token and minting an Open Devs Crew token are the only requirements</li>
+            <li><strong>You don&apos;t have to register anywhere</strong> or do anything in order to participate. Owning a partner token and minting an Open Devs Crew token are the only requirements</li>
             <li>Balances for each partner collection might be checked at any point in time from mint to the final extraction, so <strong>please make sure you own at least one partner token for the entire time</strong></li>
             <li>Any wallet address will be accepted except for those directly connected to <strong>Liarco</strong>, <strong>FreaksPix</strong> or <strong>MEP Srl</strong> (these addresses can be found in the contract code)</li>
-            <li>The initial 29 airdropped tokens won't be considered</li>
-            <li>The event will start as soon as the public mint is open (<strong>the first mint transaction</strong> on the blockchain will be used as a reference). The official launch date and time will be announced on <a href="https://twitter.com/marco_lipparini" target="_blank" rel="noreferrer">Liarco's Twitter Profile</a></li>
+            <li>The initial 29 airdropped tokens won&apos;t be considered</li>
+            <li>The event will start as soon as the public mint is open (<strong>the first mint transaction</strong> on the blockchain will be used as a reference). The official launch date and time will be announced on <a href="https://twitter.com/marco_lipparini" target="_blank" rel="noreferrer">Liarco&apos;s Twitter Profile</a></li>
             <li>We are gonna split the wallets into <strong>three lists, one for each partner collection</strong> (e.g. if the balance for DegenToonz is greater than zero, then you will be added to the DegenToonz list, if you also own at least one Sketchy Ape or a Lazy Bunny, <strong>then you will be added to those lists as well</strong>)</li>
-            <li>Each wallet is gonna receive <strong>one entry per minted token</strong>, no matter if it's a single transaction or multiple ones</li>
+            <li>Each wallet is gonna receive <strong>one entry per minted token</strong>, no matter if it&apos;s a single transaction or multiple ones</li>
             <li>Three <strong>unique addresses</strong> will be randomly extracted from each list and one free token will be transferred to each of them</li>
           </ul>
 
@@ -153,7 +153,7 @@ const Home: NextPage = () => {
           </p>
 
           <ul>
-            <li>The only sources of truth for this collection are the <strong>official website</strong> (<a href="https://opendevs.io/" target="_blank" rel="noreferrer">https://opendevs.io</a>) and <strong>Liarco's Twitter Profile</strong> (<a href="https://twitter.com/marco_lipparini" target="_blank" rel="noreferrer">@marco_lipparini</a>)</li>
+            <li>The only sources of truth for this collection are the <strong>official website</strong> (<a href="https://opendevs.io/" target="_blank" rel="noreferrer">https://opendevs.io</a>) and <strong>Liarco&apos;s Twitter Profile</strong> (<a href="https://twitter.com/marco_lipparini" target="_blank" rel="noreferrer">@marco_lipparini</a>)</li>
             <li>There is <strong>no dedicated Discord server</strong>, your are gonna find official channels on the <a href="https://discord.gg/qh6MWhMJDN" target="_blank" rel="noreferrer">HashLips server</a> soon</li>
             <li>There is <strong>no whitelist</strong>, <strong>no pre-sale</strong>, <strong>no special offer</strong> or airdrop to register for. There will only be <strong>one public sale at fixed price</strong></li>
           </ul>
