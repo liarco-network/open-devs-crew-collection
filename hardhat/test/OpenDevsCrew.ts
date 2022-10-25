@@ -363,8 +363,8 @@ describe('OpenDevsCrew', function () {
       const tokensOfMinter1 = await openDevsCrew.tokensOfOwner(minter1.getAddress());
       const tokensOfMinter2 = await openDevsCrew.tokensOfOwner(minter2.getAddress());
 
-      expect (tokensOfMinter1.length).eq(5);
-      expect (tokensOfMinter2.length).eq(5);
+      expect(tokensOfMinter1.length).eq(5);
+      expect(tokensOfMinter2.length).eq(5);
 
       expect(await Promise.all(tokensOfMinter1.map(async tokenId => await openDevsCrew.getBalanceOfToken(tokenId))))
         .deep.eq(new Array(tokensOfMinter1.length).fill(
@@ -1322,15 +1322,11 @@ describe('OpenDevsCrew', function () {
 
       // Paying more than expected
       await expect(openDevsCrew.mint(2, { value: TOKEN_PRICE.mul(3) }))
-      .to
-      .be
-      .revertedWithCustomError(openDevsCrew, 'InvalidMintPrice');
+        .to.be.revertedWithCustomError(openDevsCrew, 'InvalidMintPrice');
 
       // Paying less than expected
       await expect(openDevsCrew.mint(2, { value: TOKEN_PRICE }))
-      .to
-      .be
-      .revertedWithCustomError(openDevsCrew, 'InvalidMintPrice');
+        .to.be.revertedWithCustomError(openDevsCrew, 'InvalidMintPrice');
     });
 
     it('Check mint with over max batch', async function () {
@@ -1340,9 +1336,7 @@ describe('OpenDevsCrew', function () {
       const MAX_BATCH = await openDevsCrew.MAX_BATCH_SIZE();
 
       await expect(openDevsCrew.mint(MAX_BATCH + 1, { value: TOKEN_PRICE.mul(MAX_BATCH + 1) }))
-      .to
-      .be
-      .revertedWithCustomError(openDevsCrew, 'RequestedAmountExceedsMaxBatchSize');
+        .to.be.revertedWithCustomError(openDevsCrew, 'RequestedAmountExceedsMaxBatchSize');
     });
 
     it('Check mint over max supply', async function () {
@@ -1356,9 +1350,7 @@ describe('OpenDevsCrew', function () {
       }
 
       await expect(openDevsCrew.mint(1, { value: TOKEN_PRICE }))
-      .to
-      .be
-      .revertedWithCustomError(openDevsCrew, 'RequestedAmountExceedsMaxSupply');
+        .to.be.revertedWithCustomError(openDevsCrew, 'RequestedAmountExceedsMaxSupply');
     });
 
     it('Check setUri with metadata freeze', async function () {
