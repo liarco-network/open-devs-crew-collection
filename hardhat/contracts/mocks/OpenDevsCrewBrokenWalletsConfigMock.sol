@@ -21,7 +21,8 @@ contract OpenDevsCrewBrokenHashLipsWalletsMock is SmartCommunityWallet {
     1990,
     0.1 ether,
     10,
-    "ipfs://__CID__/hidden.json"
+    "ipfs://__CID__/hidden.json",
+    block.timestamp - 1 // Allow mint immediately after deployment
   ) {}
 }
 
@@ -43,6 +44,7 @@ contract OpenDevsCrewMepWalletMock is SmartCommunityWallet {
     1990,
     0.1 ether,
     10,
-    "ipfs://__CID__/hidden.json"
+    "ipfs://__CID__/hidden.json",
+    block.timestamp - 1 // Allow mint immediately after deployment
   ) {}
 }

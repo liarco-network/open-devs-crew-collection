@@ -10,7 +10,9 @@ abstract contract NftToken is Ownable, ERC721AQueryable, IERC2981 {
   uint256 public immutable MAX_SUPPLY;
   uint256 public immutable TOKEN_PRICE;
   uint8 public immutable MAX_BATCH_SIZE;
+  uint256 public immutable MINT_START_TIMESTAMP;
 
+  error MintIsNotOpenYet();
   error InvalidMintPrice();
   error RequestedAmountExceedsMaxBatchSize();
   error RequestedAmountExceedsMaxSupply();
@@ -27,11 +29,13 @@ abstract contract NftToken is Ownable, ERC721AQueryable, IERC2981 {
     uint256 _maxSupply,
     uint256 _tokenPrice,
     uint8 _maxBatchSize,
-    string memory _hiddenMetadataUri
+    string memory _hiddenMetadataUri,
+    uint256 _mintStartTimestamp
   ) ERC721A(_name, _symbol) {
     MAX_SUPPLY = _maxSupply;
     TOKEN_PRICE = _tokenPrice;
     MAX_BATCH_SIZE = _maxBatchSize;
+    MINT_START_TIMESTAMP = _mintStartTimestamp;
 
     setHiddenMetadataUri(_hiddenMetadataUri);
   }
@@ -43,6 +47,10 @@ abstract contract NftToken is Ownable, ERC721AQueryable, IERC2981 {
   }
 
   function mint(uint256 _amount) public payable {
+    if (block.timestamp < MINT_START_TIMESTAMP) {
+      revert MintIsNotOpenYet();
+    }
+
     if (msg.value != TOKEN_PRICE * _amount) {
       revert InvalidMintPrice();
     }
@@ -97,11 +105,18 @@ abstract contract NftToken is Ownable, ERC721AQueryable, IERC2981 {
 
   function royaltyInfo(uint256 /* _tokenId */, uint256 _salePrice) public view virtual override returns (address, uint256) {
     /*
-     * 10% of any secondary market sale goes back to the Smart Community Wallet
-     * and is split among all holders without intermediaries.
+     * This function enables support for the EIP-2981 standard
+     * (https://eips.ethereum.org/EIPS/eip-2981).
+     *
+     * This means that the contract will suggest a royalty fee of 7% of the sale
+     * price to be sent to itself (the Smart Community Wallet) so that it will
+     * be split among all the holders without intermediaries.
+     *
+     * Please keep in mind that it's up to the end-users and/or to the
+     * marketplace to second the suggestion.
      */
 
-    return (address(this), _salePrice / 10);
+    return (address(this), _salePrice * 7 / 100);
   }
 
   function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721A, IERC165) returns (bool) {

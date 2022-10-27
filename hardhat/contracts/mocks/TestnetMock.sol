@@ -47,7 +47,10 @@ contract TestnetMock is SmartCommunityWallet {
     10,
 
     // _hiddenMetadataUri
-    "ipfs://__CID__/hidden.json"
+    "ipfs://__CID__/hidden.json",
+
+    // Mint start timestamp (5 minutes after deployment)
+    block.timestamp + (5 minutes)
   ) {
     // Initial airdrops
     _mint(0x5B4dbF2Ee55930c9389EaDDa0f1fAC899f8F1bB4, 29);

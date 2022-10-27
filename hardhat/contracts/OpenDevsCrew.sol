@@ -95,7 +95,10 @@ contract OpenDevsCrew is SmartCommunityWallet {
     10,
 
     // Hidden metadata URI
-    "https://cdn.opendevs.io/tokens/public/hidden/metadata.json"
+    "https://cdn.opendevs.io/tokens/public/hidden/metadata.json",
+
+    // Mint start timestamp (2022-10-28 17:00:00 UTC)
+    1666976400
   ) {
     // Initial airdrops
     _mint(_LIARCO, 10);
