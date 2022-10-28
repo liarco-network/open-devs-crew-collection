@@ -1,0 +1,39 @@
+.error, .success {
+  @apply rounded-lg;
+  @apply p-3;
+  
+  @apply text-sm;
+  @apply text-ellipsis;
+  @apply overflow-hidden;
+  @apply whitespace-nowrap;
+  
+  @apply border ;
+  @apply shadow;
+
+  &::before {
+    @apply block;
+    @apply font-semibold;
+    @apply text-base;
+  }
+
+  &.error {
+    @apply text-error-txt;
+    @apply bg-error-bg;
+    @apply border-error-border;
+
+    &::before {
+      content: 'Error';
+    }
+  }
+
+  &.success {
+    @apply text-success-txt;
+    @apply bg-success-bg;
+    @apply border-success-border;
+    @apply text-xs;
+
+    &::before {
+      content: 'Success';
+    }
+  }
+}

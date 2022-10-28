@@ -9,6 +9,7 @@ import HeroCharacter from '../assets/hero-character.png';
 import Github from '../assets/icons/github.svg';
 import GithubBlack from '../assets/icons/github-black.svg';
 import Twitter from '../assets/icons/twitter.svg';
+import OpenSea from '../assets/icons/opensea.svg';
 import EloCharacters from '../assets/elo.png';
 import SadGangCharacter from '../assets/sad-gang.jpg';
 import BrandCharacter from '../assets/the-brand.jpg';
@@ -35,6 +36,10 @@ const Home: NextPage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [canClick, setCanClick] = useState<boolean>(true);
   const [githubButtonInView, setGithubButtonInView] = useState(false);
+  const MINT_START_TIMESTAMP = (new Date('October 28, 2022 17:00:00 UTC')).getTime() / 1000;
+  //const MINT_START_TIMESTAMP = (new Date('October 27, 2022 17:00:00 UTC')).getTime() / 1000;
+  const isMintTime = ((new Date()).getTime() / 1000) >= MINT_START_TIMESTAMP;
+  const [ isMintOpen, setIsMintOpen ] = useState(isMintTime);
 
   // Collapsible elements
   const {
@@ -98,12 +103,23 @@ const Home: NextPage = () => {
     window.addEventListener('scroll', handleGithubScroll);
     window.addEventListener('resize', handleResize);
 
+    const mintWaitInterval = setInterval(() => {
+      if ( !isMintTime ) {
+        return;
+      }
+
+      setIsMintOpen(true);
+
+      clearInterval(mintWaitInterval);
+    }, 1000);
+
     handleResize();
     handleGithubScroll();
 
     return () => {
       window.removeEventListener('scroll', handleGithubScroll);
       window.removeEventListener('resize', handleResize);
+      clearInterval(mintWaitInterval);
     }
   }, []);
 
@@ -164,6 +180,11 @@ const Home: NextPage = () => {
                   <img src={GithubBlack.src} alt="GitHub logo" />
                 </a>
               </li>
+              <li className={styles.opensea}>
+                <a href="https://opensea.io/collection/open-devs-crew" target="_blank" rel="noreferrer">
+                  <img src={OpenSea.src} alt="OpenSea logo" />
+                </a>
+              </li>
             </ul>
           </div>
         </nav>
@@ -190,6 +211,11 @@ const Home: NextPage = () => {
                     <img src={Github.src} alt="GitHub logo" />
                   </a>
                 </li>
+                <li className={styles.opensea}>
+                  <a href="https://opensea.io/collection/open-devs-crew" target="_blank" rel="noreferrer">
+                    <img src={OpenSea.src} alt="OpenSea logo" />
+                  </a>
+                </li>
               </ul>
             </div>
 
@@ -202,6 +228,23 @@ const Home: NextPage = () => {
             />
           </div>
         </header>
+
+        <section id="mint" className={styles.mint}>
+          <div className="wrapper">
+          {isMintOpen ? <>
+            <h2>Mint is live!</h2>
+
+            <p>If you have any questions or you need <strong>support during the mint</strong>, please feel free to join our <a href="https://discord.com/channels/889036571385409556" rel="noreferrer" target="_blank">Discord channel</a> on the <a href="https://discord.gg/TPmGaMXdHw" rel="noreferrer" target="_blank">HashLips server</a>.</p>
+
+            <a href="/mint" className={styles.btn}>Mint now!</a>
+          </>
+          : <>
+            <h2>We are almost there!</h2>
+
+            <p>The mint will open on <strong>Friday Oct. 28th at 5:00pm UTC</strong>. If you have any questions, please feel free to join our <a href="https://discord.com/channels/889036571385409556" rel="noreferrer" target="_blank">Discord channel</a> on the <a href="https://discord.gg/TPmGaMXdHw" rel="noreferrer" target="_blank">HashLips server</a> or ask publicly on <a href="https://twitter.com/marco_lipparini" target="_blank" rel="noreferrer">Twitter</a>.</p>
+          </>}
+          </div>
+        </section>
 
         <section id="brand" className={styles.brand}>
             <img src={BrandCharacter.src} alt="Brand character" loading="lazy" />
@@ -546,6 +589,11 @@ const Home: NextPage = () => {
               <li className={styles.github}>
                 <a href="https://github.com/liarco-network/open-devs-crew-collection" target="_blank" rel="noreferrer">
                   <img src={Github.src} alt="GitHub logo" loading="lazy" />
+                </a>
+              </li>
+              <li className={styles.opensea}>
+                <a href="https://opensea.io/collection/open-devs-crew" target="_blank" rel="noreferrer">
+                  <img src={OpenSea.src} alt="OpenSea logo" loading="lazy" />
                 </a>
               </li>
             </ul>

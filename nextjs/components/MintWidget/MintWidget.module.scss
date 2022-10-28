@@ -1,0 +1,124 @@
+.mintWidget {
+  @apply flex flex-col items-center;
+  @apply rounded-lg;
+  @apply overflow-hidden;
+
+  @apply text-popups-txt text-center text-sm;
+  @apply bg-popups-bg;
+  @apply shadow;
+
+  .preview {
+    img {
+      @apply m-auto;
+      @apply pt-7;
+      @apply max-h-52;
+    }
+  }
+
+  .price {
+    @apply px-6 py-4;
+  }
+
+  .priceComposition {
+    @apply grid sm:grid-cols-2 auto-rows-min;
+    
+    & > * {
+      @apply flex flex-col items-center;
+      @apply px-6 py-4;
+    }
+
+    .tokenPrice, .maxBatch {
+      .label {
+        @apply block;
+  
+        @apply font-semibold;
+
+        @apply text-xs text-label;
+      }
+  
+      &.tokenPrice {
+        @apply border-b sm:border-b-0 sm:border-r border-popups-internal_border;
+      }
+    }
+  }
+
+  & > * {
+    @apply w-full;
+
+    &:not(:last-child) {
+      @apply border-b border-popups-internal_border;
+    }
+  }
+
+  .controls {
+    @apply flex items-stretch;
+
+    & > * {
+      @apply rounded-none;
+      @apply border-0;
+    }
+
+    .decrease, .mintAmount {
+      @apply border-r border-popups-internal_border;
+    }
+
+    .mintAmount {
+      @apply flex items-center justify-center;
+      @apply w-full;
+
+      @apply font-semibold;
+      @apply text-label text-lg;
+    }
+
+    .primary {
+      @apply border-0;
+    }
+  }
+
+  button {
+    @apply py-2 px-6;
+
+    @apply rounded-full;
+    
+    @apply font-semibold;
+    @apply text-btn-txt;
+    @apply bg-btn-bg;
+    @apply border border-btn-border;
+    @apply shadow-sm;
+
+    &:hover {
+      @apply text-btn-hover_txt;
+      @apply bg-btn-hover_bg;
+      @apply border-btn-hover_border;
+    }
+
+    &.primary {
+      @apply text-btn_primary-txt;
+      @apply bg-btn_primary-bg;
+      @apply border-btn_primary-border;
+
+      &:hover {
+        @apply text-btn_primary-hover_txt;
+        @apply bg-btn_primary-hover_bg;
+        @apply border-btn_primary-hover_border;
+      }
+
+      &:disabled {
+        @apply opacity-30;
+
+        &:hover {
+          @apply cursor-not-allowed;
+        }
+      }
+    }
+  }
+}
+
+.cannotMint {
+  @apply rounded-lg;
+  @apply px-6 py-4;
+
+  @apply text-popups-txt text-center;
+  @apply bg-popups-bg;
+  @apply shadow;
+}
