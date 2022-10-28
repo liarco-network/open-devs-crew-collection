@@ -1,0 +1,106 @@
+.mintPage {
+  @apply p-6;
+  @apply min-h-screen;
+
+  background-image: url('../assets/backgrounds/ac-bg.jpg');
+  @apply bg-bottom bg-cover bg-fixed;
+}
+
+.mintingDapp {
+  @apply flex flex-col gap-6;
+  @apply mt-6 mx-auto mb-12;
+  @apply w-full;
+  @apply max-w-md;
+}
+
+.infoBox {
+  @apply flex flex-col;
+  @apply px-4 py-6;
+  @apply rounded-lg;
+  
+  @apply text-popups-txt;
+  @apply bg-popups-bg;
+  @apply shadow;
+
+  & h1 {
+    @apply font-bold text-lg;
+    @apply text-center;
+
+    & + span {
+      @apply mt-4;
+    }
+  }
+
+  & span {
+    @apply text-sm;
+    @apply text-center;
+    @apply mb-2;
+  }
+
+  & p {
+    @apply text-center;
+  }
+
+  .footnote {
+    @apply pt-4;
+    @apply text-xs;
+  }
+}
+
+.collectionSoldOut {
+  @apply rounded-lg;
+  @apply px-6 py-4;
+
+  @apply text-popups-txt text-center;
+  @apply bg-popups-bg;
+  @apply shadow;
+
+  &.cannot-mint .emoji {
+    @apply block;
+
+    @apply text-4xl;
+  }
+
+  &.notMainnet {
+    @apply text-warning-txt;
+    @apply bg-warning-bg;
+    @apply border border-warning-border;
+
+
+    .small {
+      @apply block;
+
+      @apply text-sm;
+    }
+  }
+
+  &.collectionSoldOut {
+    h2 {
+      @apply mb-3;
+
+      @apply text-xl;
+    }
+  }
+}
+
+.connectButton {
+  @apply w-full;
+  @apply pt-4;
+
+  & > * {
+    @apply block;
+    @apply w-full;
+  }
+
+  & button {
+    @apply block;
+    @apply w-full;
+    text-align: center !important;
+  }
+}
+
+.welcomeText {
+  & span {
+    @apply block;
+  }
+}

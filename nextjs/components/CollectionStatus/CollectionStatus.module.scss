@@ -1,0 +1,45 @@
+.collectionStatus {
+  @apply grid sm:grid-cols-2 auto-rows-min;
+  @apply rounded-lg;
+
+  @apply font-mono;
+  @apply text-popups-txt text-sm;
+  @apply bg-popups-bg;
+  @apply shadow;
+
+  & > * {
+    @apply flex flex-col items-center;
+    @apply px-6 py-4;
+
+    .label {
+      @apply text-xs text-label;
+    }
+  }
+
+  .userAddress {
+    @apply sm:col-span-2;
+    @apply overflow-hidden;
+
+    @apply border-b border-popups-internal_border;
+
+    .address {
+      @apply w-full;
+      
+      @apply font-semibold;
+      @apply truncate;
+      @apply text-center;
+    }
+  }
+
+  .supply, .ownedByUser {
+    .label {
+      @apply block;
+
+      @apply font-semibold;
+    }
+
+    &.supply {
+      @apply border-b sm:border-b-0 sm:border-r border-popups-internal_border;
+    }
+  }
+}

@@ -75,3 +75,7 @@ section {
 .toUppercase {
   @apply font-bold uppercase;
 }
+
+.loading {
+  @apply animate-pulse saturate-0 pointer-events-none;
+}

@@ -79,6 +79,11 @@
           @apply w-[90%];
           @apply translate-y-[3px];
         }
+
+        &.opensea img {
+          @apply w-[90%];
+          @apply translate-y-[3px];
+        }
       }
     }
   }
@@ -196,7 +201,8 @@
             @apply bg-black;
           }
           
-          &.twitter {
+          &.twitter, 
+          &.opensea {
             @apply bg-white;
           }
         }
@@ -211,12 +217,65 @@
   }
 }
 
+.mint {
+  @apply relative;
+  max-width: var(--max-column-width);
+  @apply mx-auto;
+  @apply pt-16 pb-16;
+  padding-left: var(--padding-x);
+  padding-right: var(--padding-x);
+
+  @apply text-center;
+
+  & > div {
+    @apply relative;
+    @apply w-full sm:w-[110%];
+    @apply sm:-left-[5%];
+    @apply px-6 py-8 sm:px-12;
+    @apply bg-yellow-50;
+    @apply border border-yellow-200;
+    @apply rounded-3xl;
+    @apply drop-shadow-md;
+
+    & h2 {
+      @apply text-2xl;
+      @apply text-yellow-900;
+
+      & > span {
+        @apply bg-yellow-400;
+        @apply text-yellow-900;
+      }
+    }
+
+    & p {
+      @apply m-auto mb-4;
+      @apply max-w-[80ch];
+      @apply text-stone-800;
+    }
+
+    & a.btn {
+      @apply inline-block;
+      @apply p-4 py-1;
+      @apply rounded-full;
+      @apply bg-yellow-400;
+
+      @apply text-yellow-900;
+
+      @apply transform hover:scale-110 transition-transform;
+
+      &:hover {
+        @apply no-underline;
+      }
+    }
+  }
+}
+
 .brand {
   @apply relative;
   @apply flex flex-col lg:grid lg:grid-cols-2 gap-4 items-center;
   max-width: var(--max-column-width);
   @apply mx-auto;
-  @apply pt-8 pb-16 lg:pt-16;
+  @apply pb-16;
   padding-left: var(--padding-x);
   padding-right: var(--padding-x);
 
@@ -728,7 +787,7 @@
         }
 
         & a {
-          @apply text-yellow-700;
+          @apply text-yellow-700 decoration-yellow-700;
         }
       }
     }
@@ -903,7 +962,8 @@
           @apply bg-black;
         }
         
-        &.twitter {
+        &.twitter, 
+        &.opensea {
           @apply bg-white;
         }
       }
@@ -922,18 +982,26 @@
     @apply rounded-full;
     @apply drop-shadow-lg;
     
-    &.twitter {      
+    &.twitter,
+    &.opensea {      
       & > a {
         @apply flex;
         @apply w-full;
         @apply h-full;
 
         & > img {
-          @apply translate-y-[1px];
           @apply w-2/3;
           @apply h-auto;
           @apply m-auto;
         }
+      }
+
+      &.twitter > a > img {
+        @apply translate-y-[1px];
+      }
+
+      &.opensea > a > img {
+        @apply translate-x-[1px];
       }
     }
   }
