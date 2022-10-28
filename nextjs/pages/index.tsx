@@ -31,6 +31,7 @@ import HashLipsLabLogo from '../assets/partners/hashlipslab-logo.svg';
 import SketchyLabsLogo from '../assets/partners/sketchylabs-logo.svg';
 import DownArrow from '../assets/down-arrow.svg';
 import favicon from '../assets/icon.png';
+import Link from 'next/link';
 
 const Home: NextPage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -236,7 +237,7 @@ const Home: NextPage = () => {
 
             <p>If you have any questions or you need <strong>support during the mint</strong>, please feel free to join our <a href="https://discord.com/channels/889036571385409556" rel="noreferrer" target="_blank">Discord channel</a> on the <a href="https://discord.gg/TPmGaMXdHw" rel="noreferrer" target="_blank">HashLips server</a>.</p>
 
-            <a href="/mint" className={styles.btn}>Mint now!</a>
+            <Link href="/mint"><a className={styles.btn}>Mint now!</a></Link>
           </>
           : <>
             <h2>We are almost there!</h2>
