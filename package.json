@@ -8,6 +8,6 @@
     "url": "https://github.com/liarco-network/open-devs-crew-collection.git"
   },
   "scripts": {
-    "build": "cd ./nextjs && yarn && yarn build && yarn next export"
+    "build": "cd ./hardhat && yarn && yarn hardhat compile && cd ../nextjs && yarn && yarn build && yarn next export"
   }
 }
