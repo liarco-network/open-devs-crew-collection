@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 import { useDebounce } from 'use-debounce';
 import React, { createContext, ReactNode, useContext, useState } from 'react';
-import { useAccount, useContractRead, useContractWrite, usePrepareContractWrite } from 'wagmi';
+import { useAccount, useBalance, useContractRead, useContractWrite, usePrepareContractWrite } from 'wagmi';
 import { SendTransactionResult } from '@wagmi/core';
 
 interface Props {
@@ -16,7 +16,8 @@ interface TokenInterface {
   mintAmount: number;
   tokenPrice: BigNumber;
   setMintAmount: (amount: number) => void;
-  isReadyToMint: boolean,
+  hasEnoughFunds: boolean;
+  isReadyToMint: boolean;
   mint: () => void;
   mintLoading: boolean;
   mintTxData?: SendTransactionResult;
@@ -32,6 +33,7 @@ export function useTokenContext() {
 
 export function TokenProvider({ children }: Props) {
   const { address } = useAccount();
+  const { data: walletBalance } = useBalance({ addressOrName: address });
   const [ mintAmount, setMintAmount ] = useState(1);
   const { abi: contractAbi } = require('../../hardhat/artifacts/contracts/OpenDevsCrew.sol/OpenDevsCrew.json');
   const contractAddress = '0x5BfBf78d81CD7d255dFA44d9f568375131361775';
@@ -71,11 +73,15 @@ export function TokenProvider({ children }: Props) {
     watch: true,
   });
 
+  const mintPrice = tokenPriceData !== undefined ? tokenPriceData.mul(mintAmount) : undefined;
+  const hasEnoughFunds = mintPrice!== undefined && walletBalance !== undefined && walletBalance.value.gte(mintPrice)
+
   const { config: mintConfig } = usePrepareContractWrite({
     addressOrName: contractAddress,
     contractInterface: contractAbi,
     functionName: 'mint',
     args: [ mintAmount, { value: tokenPriceData?.mul(mintAmount) } ],
+    enabled: hasEnoughFunds,
   });
   const { data: mintTxData, write: mint, error: mintError, isLoading: mintLoading } = useContractWrite(mintConfig);
 
@@ -87,7 +93,8 @@ export function TokenProvider({ children }: Props) {
     mintAmount,
     tokenPrice: tokenPriceData,
     setMintAmount,
-    isReadyToMint: Boolean(mintAmount === debouncedMintAmount),
+    hasEnoughFunds,
+    isReadyToMint: Boolean(hasEnoughFunds && mintAmount === debouncedMintAmount),
     mint: () => mint?.(),
     mintLoading,
     mintTxData,

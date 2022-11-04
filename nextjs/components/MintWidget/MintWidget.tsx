@@ -12,6 +12,7 @@ const MintWidget = () => {
     mintAmount,
     tokenPrice,
     setMintAmount,
+    hasEnoughFunds,
     isReadyToMint,
     mint,
     mintLoading,
@@ -46,6 +47,7 @@ const MintWidget = () => {
 
         <div className={styles.price}>
           <strong>Total price:</strong> {utils.formatEther(tokenPrice.mul(mintAmount))} ETH
+          {!hasEnoughFunds && <span className={styles.insufficientFunds}>Insufficient funds!</span>}
         </div>
 
         <div className={styles.priceComposition}>
