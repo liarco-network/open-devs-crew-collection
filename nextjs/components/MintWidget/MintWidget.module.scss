@@ -20,6 +20,8 @@
 
     .insufficientFunds {
       @apply block;
+
+      @apply font-bold;
       @apply text-red-500;
     }
   }
