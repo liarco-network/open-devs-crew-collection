@@ -17,6 +17,11 @@
 
   .price {
     @apply px-6 py-4;
+
+    .insufficientFunds {
+      @apply block;
+      @apply text-red-500;
+    }
   }
 
   .priceComposition {
