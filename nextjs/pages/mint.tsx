@@ -48,8 +48,8 @@ const Mint: NextPage = () => {
     <>
       <Head>
         <title>Open Devs Crew - Mint Page</title>
-        <meta name="description" content="Your open source journey through NFTs, web3 and educational content." />
-        
+        <meta name="description" content="Do what you are passionate about, do it to the best of your ability, share it with anyone out there in a generous and selfless way. This is our recipe to make the most of the time we are given. This is Open Devs Crew." />
+
         <meta property="og:title" content="Open Devs Crew - Mint Page"></meta>
         <meta property="og:type" content="website"></meta>
         <meta property="og:image" content={`${process.env.NEXT_PUBLIC_BASE_URL}/ogimage.jpg`}></meta>
@@ -58,11 +58,11 @@ const Mint: NextPage = () => {
         <link rel="icon" href={favicon.src} />
       </Head>
 
-      <main className={styles.mintPage}> 
+      <main className={styles.mintPage}>
         <div className={styles.mintingDapp}>
           <img className={styles.logo} src={OdcLogo.src} alt="Open Devs Crew logo" />
 
-          {isContractConnected ? 
+          {isContractConnected ?
             walletIsConnected ?
                 <>
                   <CollectionStatus />

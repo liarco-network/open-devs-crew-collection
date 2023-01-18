@@ -16,8 +16,8 @@ const Home: NextPage = () => {
     <>
       <Head>
         <title>Open Devs Crew - Communities I Love</title>
-        <meta name="description" content="Your open source journey through NFTs, web3 and educational content." />
-        
+        <meta name="description" content="Do what you are passionate about, do it to the best of your ability, share it with anyone out there in a generous and selfless way. This is our recipe to make the most of the time we are given. This is Open Devs Crew." />
+
         <meta property="og:title" content="Open Devs Crew"></meta>
         <meta property="og:type" content="website"></meta>
         <meta property="og:image" content={`${process.env.NEXT_PUBLIC_BASE_URL}/ogimage.jpg`}></meta>
@@ -25,7 +25,7 @@ const Home: NextPage = () => {
 
         <link rel="icon" href={favicon.src} />
       </Head>
-      
+
       <main>
         <img
           className={styles.logo}
@@ -35,7 +35,7 @@ const Home: NextPage = () => {
 
         <section className={styles.mainText}>
           <h2>Special Mint Event</h2>
-          
+
           <p>
             Hi everyone, <a href="https://twitter.com/marco_lipparini" target="_blank" rel="noreferrer">Liarco</a> here! 😃<br />
             I&apos;m super excited to announce that we are gonna have a <strong>special mint event</strong> for holders of the three

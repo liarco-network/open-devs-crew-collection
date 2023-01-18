@@ -38,7 +38,6 @@ const Home: NextPage = () => {
   const [canClick, setCanClick] = useState<boolean>(true);
   const [githubButtonInView, setGithubButtonInView] = useState(false);
   const MINT_START_TIMESTAMP = (new Date('October 28, 2022 17:00:00 UTC')).getTime() / 1000;
-  //const MINT_START_TIMESTAMP = (new Date('October 27, 2022 17:00:00 UTC')).getTime() / 1000;
   const isMintTime = ((new Date()).getTime() / 1000) >= MINT_START_TIMESTAMP;
   const [ isMintOpen, setIsMintOpen ] = useState(isMintTime);
 
@@ -128,8 +127,8 @@ const Home: NextPage = () => {
     <>
       <Head>
         <title>Open Devs Crew</title>
-        <meta name="description" content="Your open source journey through NFTs, web3 and educational content." />
-        
+        <meta name="description" content="Do what you are passionate about, do it to the best of your ability, share it with anyone out there in a generous and selfless way. This is our recipe to make the most of the time we are given. This is Open Devs Crew." />
+
         <meta property="og:title" content="Open Devs Crew"></meta>
         <meta property="og:type" content="website"></meta>
         <meta property="og:image" content={`${process.env.NEXT_PUBLIC_BASE_URL}/ogimage.jpg`}></meta>
@@ -137,7 +136,7 @@ const Home: NextPage = () => {
 
         <link rel="icon" href={favicon.src} />
       </Head>
-      
+
       <main>
         <a
           id={styles.githubContainer}
@@ -238,6 +237,8 @@ const Home: NextPage = () => {
             <p>If you have any questions or you need <strong>support during the mint</strong>, please feel free to join our <a href="https://discord.com/channels/889036571385409556" rel="noreferrer" target="_blank">Discord channel</a> on the <a href="https://discord.gg/TPmGaMXdHw" rel="noreferrer" target="_blank">HashLips server</a>.</p>
 
             <Link href="/mint"><a className={styles.btn}>Mint now!</a></Link>
+
+            <p>Or take a look at the <a href="https://crew.opendevs.io/" target="_blank" rel="noreferrer">already minted tokens...</a></p>
           </>
           : <>
             <h2>We are almost there!</h2>
@@ -257,6 +258,10 @@ const Home: NextPage = () => {
               <p>The best way to ensure that the future of web and blockchain technologies are exactly how we envision them, is to be on the front line to design and develop that future. </p>
 
               <p>Discover the Open Devs Crew &ldquo;kit&rdquo; and amplify and enhance your journey.</p>
+
+              <h3>Already a holder?</h3>
+
+              <p>Check out the minted tokens and manage your own collection on the <a href="https://crew.opendevs.io/" target="_blank" rel="noreferrer">Crew Gallery</a>.</p>
             </div>
         </section>
 
@@ -439,7 +444,7 @@ const Home: NextPage = () => {
                 <h3>FreaksPix <span>Artist</span></h3>
 
                 <p><strong>Alessandro</strong> (a.k.a. FreaksPix) was born in Bologna in November of 1986. He developed a passion for <strong>hand drawing</strong> from a young age and during his studies of graphics and design he transferred this passion from pieces of paper to digital ones.</p>
-                
+
                 <div className={styles.collapsible} {...getCollapsePropsFreaksPix()}>
                   <p>Everything comes topped with and flavored by his passion for writing when (even if just for a brief period) he focused on the creation of &ldquo;puppets&rdquo; with sharp characteristics, cuts of color and clear outlines.</p>
 
@@ -511,9 +516,9 @@ const Home: NextPage = () => {
 
         <section id="blueprint" className={styles.blueprint}>
           <h2>The Blueprint</h2>
-          
+
           <p>We are passionate about building long term value. Roadmaps as they have come to be known, don&apos;t fully represent our ambitions. That&apos;s why we have the blueprint. It <strong>is not</strong> based on unlocking achievement or reaching percentages. The Open Devs Crew brand, as a philosophy and activity, started in <strong>November 2021</strong>. This collection is your <strong>opportunity</strong> to take part and <strong>join us</strong> on this journey!</p>
- 
+
           <p>The work of people like Liarco and HashLips, of companies like MEP Srl or communities like Sketchy Labs aims to give a friendly, welcoming, and safe format to web3. This is done through <strong>open source projects</strong>, <strong>educational materials</strong>, <strong>professional support</strong>, and the creation of products for web3 brands and also for <strong>traditional businesses</strong> that want to benefit from the interesting opportunities offered by <strong>decentralized technologies</strong>.</p>
 
           <p>All of these activities <strong>improve the ecosystem</strong> and can generate value that can be shared directly, <strong>without intermediaries</strong>, with the people that share the same values and do their part as <strong>developers</strong>, <strong>investors</strong> or even <strong>ambassadors</strong>, bringing awareness of our community to more and more people.</p>
