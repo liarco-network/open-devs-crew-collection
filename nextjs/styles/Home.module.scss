@@ -27,11 +27,11 @@
         @apply w-[20px];
         @apply bg-slate-700;
       }
-  
+
       &::before {
         @apply top-0;
       }
-  
+
       &::after {
         @apply bottom-0;
       }
@@ -107,12 +107,12 @@
   .buttonOpen {
     & span {
       @apply bg-transparent;
-  
+
       &::before {
         @apply top-1/2;
         @apply rotate-45;
       }
-  
+
       &::after {
         @apply bottom-auto top-1/2;
         @apply -rotate-45;
@@ -125,11 +125,11 @@
     @apply w-full;
     @apply h-20;
     @apply top-0 left-0;
-    
+
     button {
       display: none;
     }
-  
+
     .navMenu {
       @apply relative;
       max-width: var(--max-column-width);
@@ -139,12 +139,12 @@
       @apply h-full;
       @apply top-0;
       @apply opacity-100;
-  
+
       .logo,
       .socials {
         display: none;
       }
-  
+
       .links {
         @apply flex flex-row justify-between items-center;
         @apply w-full;
@@ -196,12 +196,12 @@
           @apply sm:w-10;
           @apply sm:h-10;
           @apply rounded-full;
-          
+
           &.github {
             @apply bg-black;
           }
-          
-          &.twitter, 
+
+          &.twitter,
           &.opensea {
             @apply bg-white;
           }
@@ -256,6 +256,7 @@
     & a.btn {
       @apply inline-block;
       @apply p-4 py-1;
+      @apply mb-4;
       @apply rounded-full;
       @apply bg-yellow-400;
 
@@ -291,6 +292,10 @@
       @apply mb-4 lg:mb-6;
     }
 
+    h3 {
+      @apply mt-4 lg:mt-6;
+    }
+
     p {
       @apply font-normal;
     }
@@ -323,12 +328,12 @@
     & > li {
       @apply grid gap-x-4 gap-y-2;
 
-      grid-template: 
+      grid-template:
       "img title" min-content
       ".   body" / 2rem auto;
 
       @media (min-width: 1024px) {
-        grid-template: 
+        grid-template:
                         "img title" min-content
                         ".   body" / 2.5rem auto;
       }
@@ -360,7 +365,7 @@
 }
 
 .collection {
-  box-shadow: inset 0 -10px 10px -10px rgb(0 0 0 / 30%), 
+  box-shadow: inset 0 -10px 10px -10px rgb(0 0 0 / 30%),
               inset 0px 15px 10px -10px rgb(0 0 0 / 30%);
   background-image: url('../assets/backgrounds/collection-bg.jpg');
   @apply pt-16;
@@ -490,7 +495,7 @@
         }
       }
     }
-     
+
     &::after {
       content: "";
       @apply block;
@@ -533,7 +538,7 @@
     @apply pt-8 pb-16 lg:pt-16;
     padding-left: var(--padding-x);
     padding-right: var(--padding-x);
-  
+
     & img {
       @apply max-w-[60%] lg:max-w-full;
       @apply lg:self-start;
@@ -543,11 +548,11 @@
     .infoBox {
       @apply flex flex-col;
       @apply mt-8 lg:mt-0;
-  
+
       h2 {
         @apply mb-4 lg:mb-6;
       }
-  
+
       p {
         @apply font-normal;
       }
@@ -555,7 +560,7 @@
   }
 
   .animals {
-    box-shadow: inset 0 -10px 10px -10px rgb(0 0 0 / 30%), 
+    box-shadow: inset 0 -10px 10px -10px rgb(0 0 0 / 30%),
                 inset 0px 15px 10px -10px rgb(0 0 0 / 30%);
     background-image: url('../assets/backgrounds/ac-bg.jpg');
     @apply bg-no-repeat;
@@ -647,7 +652,7 @@
     @apply bg-no-repeat;
     @apply bg-cover;
     @apply bg-center;
-    box-shadow: inset 0 -10px 10px -10px rgb(0 0 0 / 30%), 
+    box-shadow: inset 0 -10px 10px -10px rgb(0 0 0 / 30%),
                 inset 0px 15px 10px -10px rgb(0 0 0 / 30%);
 
     & > div {
@@ -746,7 +751,7 @@
         @apply mt-2;
         @apply mx-auto;
         @apply p-2;
- 
+
         img {
           @apply w-full h-full;
           @apply mx-auto;
@@ -795,7 +800,7 @@
 }
 
 .web3Partners {
-  box-shadow: inset 0 -10px 10px -10px rgb(0 0 0 / 30%), 
+  box-shadow: inset 0 -10px 10px -10px rgb(0 0 0 / 30%),
               inset 0px 15px 10px -10px rgb(0 0 0 / 30%);
   background-image: url('../assets/backgrounds/partners-bg.jpg');
   @apply bg-no-repeat;
@@ -931,7 +936,7 @@
 }
 
 .footer {
-  box-shadow: inset 0 -10px 10px -10px rgb(0 0 0 / 30%), 
+  box-shadow: inset 0 -10px 10px -10px rgb(0 0 0 / 30%),
   inset 0px 15px 10px -10px rgb(0 0 0 / 30%);
   background-image: url('../assets/backgrounds/footer-bg.jpg');
   @apply bg-no-repeat;
@@ -961,8 +966,8 @@
         &.github {
           @apply bg-black;
         }
-        
-        &.twitter, 
+
+        &.twitter,
         &.opensea {
           @apply bg-white;
         }
@@ -981,9 +986,9 @@
     @apply h-10;
     @apply rounded-full;
     @apply drop-shadow-lg;
-    
+
     &.twitter,
-    &.opensea {      
+    &.opensea {
       & > a {
         @apply flex;
         @apply w-full;
@@ -1043,7 +1048,7 @@
     @apply duration-500;
     @apply translate-x-0;
   }
-  
+
   &.githubButtonHidden {
     @apply duration-200;
     @apply translate-x-20;
